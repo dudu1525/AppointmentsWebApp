@@ -17,4 +17,15 @@ dotnet ef database update
 dotnet add package Swashbuckle.AspNetCore <<for swagger
 
 
-default page: http://localhost:5159/swagger/index.html
+default page: 
+http://localhost:5159/swagger/index.html
+
+
+install nuget packages:
+newtonsoft json
+Microsoft asp net core mvc newtonsoftJson
+
+
+
+
+Integrating Leaflet

@@ -7,23 +7,15 @@ using System.ComponentModel.DataAnnotations;
 namespace api.Dtos.User
 {
 //receiving user data when registering 
-    public class Registerdto
+    public class UpdateUserRequestDto
     {
 
-        [Required]
-        public String UserName { get; set; }
-        [Required]
-        public String Password { get; set; }
-        
-        [Required]
-        public String Email { get; set; } 
+        public String UserName { get; set; } = string.Empty;
+        public String Password { get; set; } = string.Empty;
+        public String Email { get; set; }  = string.Empty;
 
     }
     
 
 
 }
-
-
-
-

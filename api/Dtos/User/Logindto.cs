@@ -10,10 +10,10 @@ namespace api.Dtos.User
     public class Logindto
     {
 
-        [Required]
-        public String UserName { get; set; }
-        [Required]
-        public String Password { get; set; }
+
+        public String UserName { get; set; } = string.Empty;
+
+        public String Password { get; set; } = string.Empty;
 
     }
     
