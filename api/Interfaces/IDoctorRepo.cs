@@ -1,6 +1,7 @@
 
 using api.Dtos.Doctor;
 using api.Models;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace api.Interfaces
 {
@@ -10,12 +11,12 @@ namespace api.Interfaces
     Task<List<Doctor>> GetAllAsync();
     Task<Doctor?> GetByIdAsync(int id);
 
-     Task<Doctor> CreateAsync(Doctor doctorModel);
+     Task<Doctor> CreateAsync(CreateDoctorDto createddoctorDto, int clinicId);
   
 
-    //  Task<User?> UpdateUserAsync(int id, UpdateUserRequestDto userDto);
+   Task<Doctor?> UpdateAsync(int id, UpdateDoctorDto doctorDto); 
 
-    //  Task<Doctor?> DeleteAsync(int id);
+      Task<Doctor?> DeleteDoctorAsync(int id);
 
 
   }

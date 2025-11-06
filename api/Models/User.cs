@@ -15,7 +15,15 @@ namespace api.Models
         public String Password { get; set; } = string.Empty;
         public String Email { get; set; } = string.Empty;
 
-        public List<Appointment> Appointments { get; set; } = new List<Appointment>();
+        public String Role { get; set; } = string.Empty;
+
+
+        //refferences
+        public Doctor Doctor { get; set; }
+        public Patient Patient  { get; set; }
+        public Assistant Assistant { get; set; }
+        
+       //admin has super abbilities, but no new fields
 
     }
     

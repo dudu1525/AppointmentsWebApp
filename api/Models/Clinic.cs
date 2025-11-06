@@ -11,10 +11,13 @@ namespace api.Models
 
         public int Id { get; set; }
         public String Name { get; set; } = string.Empty;
-        public int locationx { get; set; }
-        public int locationy { get; set; }
+        public String location { get; set; } = string.Empty;
 
+
+            //refferences
         public List<Doctor> Doctors { get; set; } = new List<Doctor>();
+
+        public List<Assistant> Assistants { get; set; } = new List<Assistant>();
 
     }
     

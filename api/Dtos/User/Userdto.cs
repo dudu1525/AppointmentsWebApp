@@ -5,14 +5,13 @@ using System.Threading.Tasks;
 using api.Models;
 namespace api.Dtos.User
 {
-//sending data from server to clients
+//sending data from server to clients/ after a log in for example
     public class Userdto
     {
 
-        public int Id { get; set; }
-        public String UserName { get; set; } = string.Empty;
-
-        public String Email { get; set; } = string.Empty;
+         public string UserName { get; set; }
+        public string Email { get; set; }
+        public string Role { get; set; }
 
     }
     

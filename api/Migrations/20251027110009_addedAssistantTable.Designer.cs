@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using api.Data;
 
@@ -11,9 +12,11 @@ using api.Data;
 namespace api.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20251027110009_addedAssistantTable")]
+    partial class addedAssistantTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -40,42 +43,44 @@ namespace api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PatientId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("DoctorId");
 
-                    b.HasIndex("PatientId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Appointment");
                 });
 
             modelBuilder.Entity("api.Models.Assistant", b =>
                 {
-                    b.Property<int>("AssistantId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AssistantId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AssistantName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("ClinicId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("AssistantId");
+                    b.HasKey("Id");
 
                     b.HasIndex("ClinicId");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
 
                     b.ToTable("Assistant");
                 });
@@ -92,9 +97,11 @@ namespace api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("location")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("locationx")
+                        .HasColumnType("int");
+
+                    b.Property<int>("locationy")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -103,49 +110,32 @@ namespace api.Migrations
 
             modelBuilder.Entity("api.Models.Doctor", b =>
                 {
-                    b.Property<int>("DoctorId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DoctorId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int?>("ClinicId")
                         .HasColumnType("int");
+
+                    b.Property<string>("DoctorName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Type")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("DoctorId");
+                    b.HasKey("Id");
 
                     b.HasIndex("ClinicId");
 
-                    b.HasIndex("UserId")
-                        .IsUnique();
-
                     b.ToTable("Doctor");
-                });
-
-            modelBuilder.Entity("api.Models.Patient", b =>
-                {
-                    b.Property<int>("PatientId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PatientId"));
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("PatientId");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
-
-                    b.ToTable("Patient");
                 });
 
             modelBuilder.Entity("api.Models.User", b =>
@@ -164,10 +154,6 @@ namespace api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("UserName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -183,13 +169,13 @@ namespace api.Migrations
                         .WithMany("Appointments")
                         .HasForeignKey("DoctorId");
 
-                    b.HasOne("api.Models.Patient", "Patient")
+                    b.HasOne("api.Models.User", "User")
                         .WithMany("Appointments")
-                        .HasForeignKey("PatientId");
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Doctor");
 
-                    b.Navigation("Patient");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("api.Models.Assistant", b =>
@@ -198,15 +184,7 @@ namespace api.Migrations
                         .WithMany("Assistants")
                         .HasForeignKey("ClinicId");
 
-                    b.HasOne("api.Models.User", "User")
-                        .WithOne("Assistant")
-                        .HasForeignKey("api.Models.Assistant", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Clinic");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("api.Models.Doctor", b =>
@@ -215,26 +193,7 @@ namespace api.Migrations
                         .WithMany("Doctors")
                         .HasForeignKey("ClinicId");
 
-                    b.HasOne("api.Models.User", "User")
-                        .WithOne("Doctor")
-                        .HasForeignKey("api.Models.Doctor", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Clinic");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("api.Models.Patient", b =>
-                {
-                    b.HasOne("api.Models.User", "User")
-                        .WithOne("Patient")
-                        .HasForeignKey("api.Models.Patient", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("api.Models.Clinic", b =>
@@ -249,21 +208,9 @@ namespace api.Migrations
                     b.Navigation("Appointments");
                 });
 
-            modelBuilder.Entity("api.Models.Patient", b =>
-                {
-                    b.Navigation("Appointments");
-                });
-
             modelBuilder.Entity("api.Models.User", b =>
                 {
-                    b.Navigation("Assistant")
-                        .IsRequired();
-
-                    b.Navigation("Doctor")
-                        .IsRequired();
-
-                    b.Navigation("Patient")
-                        .IsRequired();
+                    b.Navigation("Appointments");
                 });
 #pragma warning restore 612, 618
         }

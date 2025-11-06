@@ -11,25 +11,27 @@ namespace api.Mappers
     
     public static class DoctorMappers
     {
-        public static Doctordto ToDoctorDto(this Doctor doctorModel)//send this to the interface, the user doesent need to see the whole doctor structure
+         public static DoctorDetailsDto ToDoctorDetailsDto(this Doctor doctorModel)
         {
-            return new Doctordto
+            return new DoctorDetailsDto
             {
-                Id = doctorModel.Id,
-                DoctorName = doctorModel.DoctorName,
-                ClinicId = doctorModel.ClinicId,
-                Type = doctorModel.Type
+                DoctorId = doctorModel.DoctorId,
+                DoctorName = doctorModel.User?.UserName,
+                Email = doctorModel.User?.Email,
+                Type = doctorModel.Type,
+                ClinicId = doctorModel.ClinicId
             };
         }
-
-        public static Doctor ToDoctorFromRegister(this DoctorRegisterDto doctorDto, int clinicId)
-        {//transform this from a standard Dto, given by the user input to a Doctor object that can be stored inside the database
-            return new Doctor
+       
+    
+    public static User ToUserFromCreatedDto(this CreateDoctorDto createddoctorDto)
+        {
+            return new User
             {
-                DoctorName = doctorDto.DoctorName,
-                Password = doctorDto.Password,
-                ClinicId = clinicId,
-                Type = doctorDto.Type
+                UserName = createddoctorDto.DoctorName,
+                Email = createddoctorDto.DoctorEmail,
+                Password = createddoctorDto.Password,
+                Role = "Doctor"
             };
         }
 

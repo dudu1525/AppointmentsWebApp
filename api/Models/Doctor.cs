@@ -9,17 +9,17 @@ namespace api.Models
     public class Doctor
     {
 
-        public int Id { get; set; }
-        
-        public String DoctorName { get; set; } = string.Empty;
-
-        public String Password { get; set; } = string.Empty;
+        public int DoctorId { get; set; }
+        public int UserId { get; set; }
 
         public int? ClinicId { get; set; }
-        public Clinic? Clinic { get; set; }
-
         public String Type { get; set; } = string.Empty;
+    
 
+    //reffeences
+        
+        public Clinic? Clinic { get; set; }
+         public User User { get; set; }
         public List<Appointment> Appointments { get; set; } = new List<Appointment>();
 
     }

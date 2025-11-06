@@ -10,7 +10,9 @@ namespace api.Dtos.User
     public class Logindto
     {
 
-
+        [Required]
+        [MinLength(5, ErrorMessage = "name must be at least 5 characters long!")]
+        [MaxLength(20, ErrorMessage ="Name must be at most 20 characters long!")]
         public String UserName { get; set; } = string.Empty;
 
         public String Password { get; set; } = string.Empty;

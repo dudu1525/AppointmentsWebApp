@@ -11,17 +11,18 @@ namespace api.Models
     {
 
         public int Id { get; set; }
-        public int? DoctorId { get; set; } 
-
-        public int? UserId { get; set; }
-         public Doctor? Doctor { get; set; }
-        public User? User { get; set; }
+        public int? DoctorId { get; set; }
+        public int? PatientId { get; set; }
 
         public DateTime CreatedOn { get; set; } = DateTime.Now;
 
         public String Status { get; set; } = string.Empty;
         public String Message { get; set; } = string.Empty;
 
+        //refferences
+
+        public Doctor? Doctor { get; set; }
+        public Patient? Patient { get; set; }
     }
     
 

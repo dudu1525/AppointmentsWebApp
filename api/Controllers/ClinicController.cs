@@ -15,10 +15,17 @@ namespace api.Controllers
     public class ClinicController : ControllerBase
     {
          private readonly IClinicRepo clinicrepo;
-        public ClinicController( IClinicRepo cclinicrepo)
+        public ClinicController(IClinicRepo cclinicrepo)
         {
             clinicrepo = cclinicrepo;
         }
+        
+
+
+
+
+
+        
     }
 
 
