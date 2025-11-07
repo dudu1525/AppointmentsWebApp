@@ -16,8 +16,8 @@ namespace api.Models
         public int? ClinicId { get; set; }
         
         //reffeences
-                public Clinic? Clinic { get; set; }
-                public User User { get; set; }
+         public Clinic? Clinic { get; set; }
+         public User User { get; set; }
 
     }
     

@@ -3,6 +3,7 @@ using api.Dtos.Doctor;
 using api.Dtos.User;
 using api.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using api.Mappers;
 
 namespace api.Controllers
 {
@@ -63,6 +64,15 @@ namespace api.Controllers
                 Role = patient.User.Role,
 
             });
+        }
+
+        [HttpGet]
+         public async Task<IActionResult> GetAll()
+        {
+
+            var allusers = await _userRepo.GetAllAsync();
+            var usersDto = allusers.Select(u => u.ToUserDto());
+            return Ok(usersDto);
         }
         
 
