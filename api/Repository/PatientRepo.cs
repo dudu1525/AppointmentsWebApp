@@ -95,6 +95,10 @@ namespace api.Repository
             return await _context.Patient.Include(p => p.User).FirstOrDefaultAsync(p => p.PatientId == id);
         }
 
-        
+        public async Task<Patient?> GetByUserIdAsync(int userId)
+        {
+            return await _context.Patient.FirstOrDefaultAsync(p => p.UserId == userId); 
+                       
+                       }
     }
 }

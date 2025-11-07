@@ -14,5 +14,18 @@ namespace api.Mappers
                 Role = userModel.Role
             };
         }
+
+        public static User ToUserFromAdminRegister(this RegisterAdminDto adminDto)
+        {
+            return new User
+            {
+                UserName = adminDto.UserName,
+                Password = adminDto.Password,
+                Role = "Admin",
+                Email = adminDto.Email
+
+            };
+
+        }
     }
 }

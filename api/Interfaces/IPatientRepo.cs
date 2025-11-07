@@ -8,8 +8,10 @@ namespace api.Interfaces
         Task<List<Patient>> GetAllAsync();
         Task<Patient?> GetByIdAsync(int id);
         Task<Patient> CreateAsync(CreatePatientDto patientDto);
-        Task<Patient?> UpdateAsync(int id, UpdatePatientDto patientDto); 
+        Task<Patient?> UpdateAsync(int id, UpdatePatientDto patientDto);
         Task<Patient?> DeleteAsync(int id);
+        
+        Task<Patient?> GetByUserIdAsync(int userId);
 
 
 

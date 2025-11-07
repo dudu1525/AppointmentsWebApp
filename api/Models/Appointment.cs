@@ -16,6 +16,8 @@ namespace api.Models
 
         public DateTime CreatedOn { get; set; } = DateTime.Now;
 
+        public DateTime AppointmentDateTime { get; set; }
+
         public String Status { get; set; } = string.Empty;
         public String Message { get; set; } = string.Empty;
 

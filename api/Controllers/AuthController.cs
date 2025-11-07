@@ -66,7 +66,7 @@ namespace api.Controllers
             });
         }
 
-        [HttpGet]
+        [HttpGet("get-all-users")]
          public async Task<IActionResult> GetAll()
         {
 
@@ -74,9 +74,27 @@ namespace api.Controllers
             var usersDto = allusers.Select(u => u.ToUserDto());
             return Ok(usersDto);
         }
-        
 
 
+        [HttpPost("create-admin")]
+        //need to be admin in order to create another admin
+        public async Task<IActionResult> CreateAdmin([FromBody] RegisterAdminDto adminDto)
+        {
+                //transform to normal user
+            var userModel = adminDto.ToUserFromAdminRegister();
+
+            var createdAdmin = await _userRepo.CreateAsync(userModel);
+
+                //return dto, so no password is returned
+                 return Ok(new Userdto
+            {
+                UserName = createdAdmin.UserName,
+                Email = createdAdmin.Email,
+                Role = createdAdmin.Role,
+
+            });
+
+        }
 
        
     }

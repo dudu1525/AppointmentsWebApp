@@ -24,7 +24,7 @@ namespace api.Repository
             await _dbcontext.SaveChangesAsync();
             return userModel;
         }
-
+    
         public async Task<User?> DeleteAsync(int id)
         {
             var userModel = await _dbcontext.User.FirstOrDefaultAsync(x => x.Id == id);
