@@ -60,11 +60,17 @@ namespace api.Repository
  
         public async Task<Patient?> DeleteAsync(int id)
         {
-            var patientModel = await _context.Patient.FirstOrDefaultAsync(p => p.PatientId == id);
+            var patientModel = await _context.Patient.Include(p =>p.Appointments).FirstOrDefaultAsync(p => p.PatientId == id);
 
             if (patientModel == null)
             {
-                return null; 
+                return null;
+            }
+            
+            if (patientModel.Appointments.Any())
+            {
+                                throw new InvalidOperationException("Cannot delete patient with assigned appointments.");
+
             }
 
             var userModel = await _userRepo.GetByIdAsync(patientModel.UserId);

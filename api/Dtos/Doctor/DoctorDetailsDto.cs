@@ -1,3 +1,5 @@
+using api.Dtos.Appointments;
+
 namespace api.Dtos.Doctor
 {
     // For sending doctor data safely to the client
@@ -8,5 +10,10 @@ namespace api.Dtos.Doctor
         public string Email { get; set; }
         public string Type { get; set; }
         public int? ClinicId { get; set; }
+
+
+        public List<AppointmentSummaryDto> Appointments { get; set; }
+
+        
     }
 }

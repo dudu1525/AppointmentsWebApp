@@ -28,8 +28,11 @@ namespace api.Repository
 
         public async Task<Doctor?> GetByIdAsync(int id)
         {
-            return await _dbcontext.Doctor
-        .Include(d => d.User)
+             return await _dbcontext.Doctor
+        .Include(d => d.User) 
+        .Include(d => d.Appointments) 
+            .ThenInclude(a => a.Patient) 
+                .ThenInclude(p => p.User) 
         .FirstOrDefaultAsync(d => d.DoctorId == id);
         }
         
@@ -62,11 +65,15 @@ namespace api.Repository
         }
 
         public async Task<Doctor?> DeleteDoctorAsync(int id)
-        {
-            var doctorModel = await _dbcontext.Doctor.FirstOrDefaultAsync(X => X.DoctorId == id);
+        {       //also include appointments
+            var doctorModel = await _dbcontext.Doctor.Include(d => d.Appointments).FirstOrDefaultAsync(X => X.DoctorId == id);
+            
             if (doctorModel == null)
                 return null;
-
+            if (doctorModel.Appointments.Any())
+            {
+                throw new InvalidOperationException("Cannot delete a doctor that has appointments tied to him!");
+            }
             var userModel = await _userRepo.GetByIdAsync(doctorModel.UserId);
 
             _dbcontext.Doctor.Remove(doctorModel);

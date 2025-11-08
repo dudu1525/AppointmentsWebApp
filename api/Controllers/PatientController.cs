@@ -64,6 +64,10 @@ namespace api.Controllers
        // [Authorize(Roles = "Admin")] 
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
+
+
+            try
+            {
             var patientModel = await _patientRepo.DeleteAsync(id);
 
             if (patientModel == null)
@@ -71,7 +75,15 @@ namespace api.Controllers
                 return NotFound();
             }
 
-            return NoContent(); 
+            return NoContent();      
+
+
+            }catch (InvalidOperationException ex)
+            {
+            return BadRequest(ex.Message);
+
+            }
+           
         }
     }
 }

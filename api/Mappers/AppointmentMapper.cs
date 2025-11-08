@@ -33,7 +33,20 @@ namespace api.Mappers
                 }
 
             };
-            
+
+        }
+        
+        public static AppointmentSummaryDto ToAppointmentSummaryDto(this Appointment appointmentModel)
+        {
+              return new AppointmentSummaryDto
+              {
+                  Id = appointmentModel.Id,
+                  AppointmentDateTime = appointmentModel.AppointmentDateTime,
+                  Status = appointmentModel.Status,
+                  PatientId = appointmentModel.PatientId ?? 0,
+
+                  PatientName = appointmentModel.Patient?.User?.UserName
+              };
         }
     }
 }

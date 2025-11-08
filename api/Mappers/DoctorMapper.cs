@@ -19,7 +19,11 @@ namespace api.Mappers
                 DoctorName = doctorModel.User?.UserName,
                 Email = doctorModel.User?.Email,
                 Type = doctorModel.Type,
-                ClinicId = doctorModel.ClinicId
+                ClinicId = doctorModel.ClinicId,
+
+                Appointments = doctorModel.Appointments
+                .Select(a => a.ToAppointmentSummaryDto())
+                .ToList()
             };
         }
        

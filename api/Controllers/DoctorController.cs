@@ -67,10 +67,19 @@ namespace api.Controllers
         [Route("{id:int}")]
         public async Task<IActionResult> DeleteDoctor([FromRoute] int id)
         {
-            var doctorModel = await doctorrepo.DeleteDoctorAsync(id);
+            try
+            {
+                 var doctorModel = await doctorrepo.DeleteDoctorAsync(id);
             if (doctorModel == null)
                 return NotFound("Doctor does not exist!");
             return NoContent();
+
+            } catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+
         }
         
 
