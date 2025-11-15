@@ -18,8 +18,8 @@ namespace api.Repository
 
         public async Task<User> CreateAsync(User userModel)
         {
+            userModel.Password = BCrypt.Net.BCrypt.HashPassword(userModel.Password);
            
-            // userModel.Password = BCrypt.Net.BCrypt.HashPassword(userModel.Password);
             await _dbcontext.User.AddAsync(userModel);
             await _dbcontext.SaveChangesAsync();
             return userModel;

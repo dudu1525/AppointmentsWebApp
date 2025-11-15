@@ -4,6 +4,7 @@ using api.Dtos.User;
 using api.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using api.Mappers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace api.Controllers
 {
@@ -16,10 +17,10 @@ namespace api.Controllers
         private readonly IDoctorRepo _doctorRepo;
         private readonly IUserRepo _userRepo;
 
-
-        public AuthController(IPatientRepo patientRepo, IUserRepo userRepo)
-        {
-            _patientRepo = patientRepo;
+         private readonly ITokenService _tokenService;
+        public AuthController(IPatientRepo patientRepo, IUserRepo userRepo, ITokenService tokenService)
+        {   _tokenService = tokenService;
+            _patientRepo = patientRepo; 
             _userRepo = userRepo;
            // _tokenService = tokenService;
         }
@@ -38,11 +39,19 @@ namespace api.Controllers
                 return Unauthorized("Invalid Username or Password.");
             }
 
-            return Ok(new Userdto
+            if (!BCrypt.Net.BCrypt.Verify(loginDto.Password, user.Password))
+             {
+                 return Unauthorized("Invalid Username or Password.");
+             }
+
+             var token = _tokenService.CreateToken(user);
+
+            return Ok(new  //ill add later a dto
             {
                 UserName = user.UserName,
                 Email = user.Email,
                 Role = user.Role,
+                Token = token
             });
         }
 
@@ -56,17 +65,19 @@ namespace api.Controllers
 
             var patient = await _patientRepo.CreateAsync(patientDto);
 
-
-            return Ok(new Userdto
+            var token = _tokenService.CreateToken(patient.User);
+            
+            return Ok(new //ill add dto
             {
                 UserName = patient.User.UserName,
                 Email = patient.User.Email,
                 Role = patient.User.Role,
-
+                Token = token 
             });
         }
 
         [HttpGet("get-all-users")]
+        [Authorize(Roles = "Admin")] 
          public async Task<IActionResult> GetAll()
         {
 
@@ -84,15 +95,16 @@ namespace api.Controllers
             var userModel = adminDto.ToUserFromAdminRegister();
 
             var createdAdmin = await _userRepo.CreateAsync(userModel);
-
+            var token = _tokenService.CreateToken(createdAdmin);
                 //return dto, so no password is returned
-                 return Ok(new Userdto
-            {
-                UserName = createdAdmin.UserName,
-                Email = createdAdmin.Email,
-                Role = createdAdmin.Role,
+                 return Ok(new //add dto here
+                 {
+                     UserName = createdAdmin.UserName,
+                     Email = createdAdmin.Email,
+                     Role = createdAdmin.Role,
+                    Token = token 
 
-            });
+                 });
 
         }
 
