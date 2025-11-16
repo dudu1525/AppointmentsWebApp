@@ -26,6 +26,26 @@ newtonsoft json
 Microsoft asp net core mvc newtonsoftJson
 
 
+Microsoft Authentication JWbterearer
+system identityModel tokens jwtj
+BCrypt.Net-Next
 
 
-Integrating Leaflet
+{
+  "userName": "adminDan1",
+  "email": "admindan1@gmail.com",
+  "password": "adminpassword"
+}
+
+{
+  "assistantName": "Diana112",
+  "password": "Diana112",
+  "assistantEmail": "Diana@gmail.com"
+}
+
+//frontend
+
+npm install create-react-app
+npm create-react-app (-can do folder here) --template typescript
+
+run: npm start
