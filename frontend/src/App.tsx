@@ -1,16 +1,16 @@
 import React from 'react';
-
 import './App.css';
 import Navbar from './Components/Navbar/navbar';
-import Hero from './Components/Hero/hero';
+import { Outlet } from 'react-router';
+
 
 function App() {
-  return (
-    <div className="App">
-      <Navbar />
-      <Hero />
-    </div>
-  );
+  return( <>
+    <Navbar />
+    <Outlet />
+  
+  
+  </>);
 }
 
 export default App;
