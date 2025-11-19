@@ -12,7 +12,7 @@ module.exports = {
       colors: {
         darkBlue: '#0E3B5C',
         lightBlue: "hsl(215.02, 98.39%, 51.18%)",
-       
+        navbarColor: "#e5e7eb",
         lightGreen: "hsl(156.62, 73.33%, 58.82%)",
       },
       fontFamily: {
