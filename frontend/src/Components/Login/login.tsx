@@ -1,12 +1,30 @@
-import React from 'react'
-
+import React, { useState } from 'react'
+import { useAuth } from '../../Context/UserAuth';
 interface Props {}
 
+
+
 const Login = (props: Props) => {
-    const handleLogin = (event:any) => {
-    event.preventDefault(); 
-    console.log("Form submitted!");
-  
+
+  const{loginUser, user} = useAuth();
+
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const handleLogin = async (event: React.FormEvent) => {
+    event.preventDefault();
+    setError('');
+    setLoading(true);
+
+    try {
+      await loginUser(username, password);
+    } catch (e) {
+      setError('Invalid username or password');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -18,8 +36,12 @@ const Login = (props: Props) => {
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
               Sign in to your account
             </h1>
+             {error && (
+              <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+                {error}
+              </div>
+            )}
             
-            {}
             <form className="space-y-4 md:space-y-6" onSubmit={handleLogin}>
               <div>
                 <label
@@ -34,7 +56,9 @@ const Login = (props: Props) => {
                   name="username" 
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="Username"
-               
+               value={username}  
+                  onChange={(e) => setUsername(e.target.value)}  
+                  
                 />
                 {}
                 {
@@ -55,7 +79,8 @@ const Login = (props: Props) => {
                   name="password" 
                   placeholder="••••••••"
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                 
+                 value={password}  
+                  onChange={(e) => setPassword(e.target.value)}
                 />
                 {/* errors here */}
                 {/* 
@@ -75,9 +100,11 @@ const Login = (props: Props) => {
               <button
                 type="submit"
                 className="w-full text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
-               
+                  disabled={loading} 
+                  
               >
-                Sign in
+               {loading ? 'Signing in...' : 'Sign in'}
+               
               </button>
 
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">

@@ -1,10 +1,13 @@
 import React from 'react'
 import logo from "./logo.png"
 import { Link } from 'react-router-dom';
-
+import { useAuth } from '../../Context/UserAuth';
 interface Props {}//should receive user id and patient id or smth to pass to dashboards
 
-const navbar = (props: Props) => {
+const Navbar = (props: Props) => {
+
+  const {isLoggedIn, user ,logout} = useAuth();
+  
   return (
  <nav className="bg-navbarColor">
       <div className="container mx-auto p-6">
@@ -20,7 +23,22 @@ const navbar = (props: Props) => {
             </div>
           </div>
           <div className="hidden lg:flex items-center space-x-6 text-back">
-            <Link to="/login" className="hover:text-darkBlue">Login</Link>
+
+           <div>   
+           {isLoggedIn() ? (<>
+              <span className="mr-4">Welcome, {user?.userName}!</span>
+        <button  className="hover:text-darkBlue" onClick={logout}>
+          Logout
+        </button>
+      </>
+    ) : (
+      <Link to="/login" className="hover:text-darkBlue">
+        Login
+      </Link>
+    )}
+  </div>
+
+
             <Link
               to="/register"
               className="px-8 py-3 font-bold rounded text-white bg-darkBlue hover:opacity-90"
@@ -34,4 +52,4 @@ const navbar = (props: Props) => {
   );
 };
 
-export default navbar
+export default Navbar

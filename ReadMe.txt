@@ -43,9 +43,21 @@ BCrypt.Net-Next
   "assistantEmail": "Diana@gmail.com"
 }
 
-//frontend
+///////////////////////////////////////////////////////frontend
 
 npm install create-react-app
 npm create-react-app (-can do folder here) --template typescript
 
-run: npm start
+npm install axios --save  <for routing
+npm install --save-dev @types/axios
+
+npm install -D tailwindcss@^3
+npx tailwindcss init
+
+npm install -save react-router
+npm install -save react-router-dom
+npm install --save @types/react-router-dom
+npm install --save @types/react-router
+
+
+run: npm start 
