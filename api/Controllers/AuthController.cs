@@ -47,11 +47,12 @@ namespace api.Controllers
              var token = _tokenService.CreateToken(user);
 
             return Ok(new  //ill add later a dto
-            {
+            {   
                 UserName = user.UserName,
                 Email = user.Email,
                 Role = user.Role,
-                Token = token
+                Token = token,
+                 UserId = user.Id 
             });
         }
 
@@ -59,20 +60,31 @@ namespace api.Controllers
         [HttpPost("register-patient")]
         public async Task<IActionResult> RegisterPatient([FromBody] CreatePatientDto patientDto)
         {
-
+             
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
+
+            var allUsers = await _userRepo.GetAllAsync();
+            var user = allUsers.FirstOrDefault(u => 
+                u.UserName.Equals(patientDto.UserName, StringComparison.OrdinalIgnoreCase));
+
+            if (user != null) //if user already exists!
+            {
+                return Unauthorized("Username already exists, choose another one!");
+            }
+            
 
             var patient = await _patientRepo.CreateAsync(patientDto);
 
             var token = _tokenService.CreateToken(patient.User);
             
-            return Ok(new //ill add dto
+            return Ok(new //send the id??
             {
                 UserName = patient.User.UserName,
                 Email = patient.User.Email,
                 Role = patient.User.Role,
-                Token = token 
+                Token = token ,
+                
             });
         }
 
