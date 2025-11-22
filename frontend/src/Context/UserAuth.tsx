@@ -1,14 +1,14 @@
 import { createContext, useEffect, useState } from "react";
 import { User } from "../types/appointment";
 import { useNavigate } from "react-router-dom";
-import { loginAPI } from "../Services/AuthService";
+import { loginAPI, registerAPI } from "../Services/AuthService";
 import React from "react";
 import axios from "axios"
 
 type UserContextType = {
     user: User | null;
     token: string | null;
-   // registerUser: (email: string, username: string, password:string) => void;
+    registerUser: (email: string, username: string, password:string) => void;
     loginUser:(username: string, password: string) => void;
     logout:() => void;
     isLoggedIn: () => boolean;
@@ -46,9 +46,28 @@ export const UserProvider =  ({children}: Props) => {
 
     }, [] );
 
-    const register = async (email: string, username: string, password: string) =>{
+    const registerUser = async (email: string, username: string, password: string) =>{
+              await registerAPI(email, username, password)
+      .then((res) => {
+        if (res) {
+          localStorage.setItem("token", res?.data.token);
+          const userObj = {
+            userName: res?.data.userName,
+            email: res?.data.email,
+            role: res?.data.role,
+             userId: res.data.userId,
 
-        //await regissterAPI(email, username,password).then((res) => { })
+          };
+          localStorage.setItem("user", JSON.stringify(userObj));
+          setToken(res?.data.token!);
+          setUser(userObj!);
+          console.log("succesfully created user!"+ userObj.userId+"  "+userObj.role);
+          navigate("/");
+        }
+      })
+      .catch((e) => console.log("Server error occured when creating account"));
+
+
     }
 
 
@@ -93,7 +112,7 @@ export const UserProvider =  ({children}: Props) => {
     }
 
     return (
-        <UserContext.Provider value = {{loginUser, user, token, logout, isLoggedIn, }}>
+        <UserContext.Provider value = {{loginUser, user, token, logout, isLoggedIn,registerUser }}>
             {isReady ? children : null}
         </UserContext.Provider>
 

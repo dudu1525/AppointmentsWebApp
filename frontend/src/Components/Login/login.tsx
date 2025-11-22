@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useAuth } from '../../Context/UserAuth';
+import { Link } from 'react-router-dom';
 interface Props {}
 
 
@@ -109,12 +110,12 @@ const Login = (props: Props) => {
 
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                 Don’t have an account yet?{" "}
-                <a
-                  href="#" //or link!!!! instead of a, have Link
+                <Link
+                  to="/register" //or link!!!! instead of a, have Link
                   className="font-medium text-primary-600 hover:underline dark:text-primary-500"
                 >
                   Sign up
-                </a>
+                </Link>
               </p>
             </form>
           </div>

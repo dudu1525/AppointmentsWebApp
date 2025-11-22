@@ -84,6 +84,8 @@ namespace api.Controllers
                 Email = patient.User.Email,
                 Role = patient.User.Role,
                 Token = token ,
+                UserId = patient.User.Id, 
+
                 
             });
         }
@@ -101,6 +103,7 @@ namespace api.Controllers
 
         [HttpPost("create-admin")]
         //need to be admin in order to create another admin
+        [Authorize(Roles = "Admin")] 
         public async Task<IActionResult> CreateAdmin([FromBody] RegisterAdminDto adminDto)
         {
                 //transform to normal user
@@ -114,7 +117,8 @@ namespace api.Controllers
                      UserName = createdAdmin.UserName,
                      Email = createdAdmin.Email,
                      Role = createdAdmin.Role,
-                    Token = token 
+                    Token = token,
+
 
                  });
 

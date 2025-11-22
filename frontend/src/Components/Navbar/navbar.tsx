@@ -38,13 +38,16 @@ const Navbar = (props: Props) => {
     )}
   </div>
 
-
+          <div>
+            {isLoggedIn() ? (<></>) :(
             <Link
               to="/register"
               className="px-8 py-3 font-bold rounded text-white bg-darkBlue hover:opacity-90"
             >
               Signup
-            </Link>
+            </Link>)}
+        </div>
+
           </div>
         </div>
       </div>
