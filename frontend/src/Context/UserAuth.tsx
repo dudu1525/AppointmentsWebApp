@@ -89,7 +89,24 @@ export const UserProvider =  ({children}: Props) => {
                     setToken(res?.data.token!);
                     setUser(userObj!);
                     //toast.success(login success);
-                    navigate("/patient/2");                          //change this to specifc, but ill see 
+
+                    //////navigate based on role!
+                  
+                    switch (userObj?.role)
+                    {
+                        case "Patient" :
+                            navigate(`/patient/${userObj.userId}`); 
+                            break;
+                        case "Doctor" :
+                            navigate(`/doctor/${userObj.userId}`); 
+                            break;
+                        case "Assistant":
+                            navigate(`/assistant/${userObj.userId}`); 
+                            break;
+                        case "Admin":
+                            navigate(`/admin/${userObj.userId}`); 
+                            break;
+                    }                 
                     console.log( userObj.userId+"  "+userObj.role);
                     }
 

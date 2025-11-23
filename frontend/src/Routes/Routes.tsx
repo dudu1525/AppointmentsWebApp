@@ -7,6 +7,9 @@ import HomePage from "../Pages/HomePage/HomePage";
 import PatientDashboard from "../Pages/PatientDashboard/PatientDashboard";
 import Unauthorized from "../Pages/UnauthorizedPage";
 import ProtectedRoute from "./ProtectedRoute";
+import DoctorDashboard from "../Pages/DoctorDashboard/DoctorDashboard";
+import AssistantPage from "../Pages/AssistantPage";
+import AdminDashboard from "../Pages/AdminDashboard";
 
 
 export const router = createBrowserRouter([
@@ -27,7 +30,9 @@ export const router = createBrowserRouter([
                             //insert another path
             ]
         },
-
+        {   path: "doctor/:idDoctor", element:<ProtectedRoute allowedRoles={['Doctor', 'Admin']}> <DoctorDashboard/> </ProtectedRoute>},
+        {   path: "assistant/:idDoctor", element:<ProtectedRoute allowedRoles={['Assistant', 'Admin']}> <AssistantPage/> </ProtectedRoute>},
+        {   path: "admin/:idAdmin", element:<ProtectedRoute allowedRoles={['Admin']}> <AdminDashboard/> </ProtectedRoute>}
 
     ]
 }

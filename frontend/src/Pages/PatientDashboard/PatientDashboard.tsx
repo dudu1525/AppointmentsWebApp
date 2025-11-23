@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import InputsModalBox from '../../Components/PatientDashboardComponents/InputsModalBox'
 import AppointmentList from '../../Components/PatientDashboardComponents/AppointmentList'
 import AppointmentDetailed from '../../Components/PatientDashboardComponents/AppointmentDetailed'
+import { useAuth } from '../../Context/UserAuth'
 
 
 interface Props  {}
@@ -12,8 +13,7 @@ const PatientDashboard = (props: Props) => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-
-
+ 
   return (
       <section className="h-full bg-darkBlue flex flex-col overflow-hidden">
       <div className="flex-1 flex justify-center">

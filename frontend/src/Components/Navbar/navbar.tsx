@@ -7,6 +7,11 @@ interface Props {}//should receive user id and patient id or smth to pass to das
 const Navbar = (props: Props) => {
 
   const {isLoggedIn, user ,logout} = useAuth();
+
+  const handleUserTypeLoad = () =>
+  {     //switch on user and go to dashboard
+        //to=`/ ${user?.role}/${user?.userId}`  
+  };
   
   return (
  <nav className="bg-navbarColor">
