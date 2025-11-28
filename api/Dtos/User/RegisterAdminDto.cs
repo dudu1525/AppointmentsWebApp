@@ -3,7 +3,7 @@ namespace api.Dtos.User
 //sending data from server to clients/ after a log in for example
     public class RegisterAdminDto
     {
-
+        public string Name { get; set; }
          public string UserName { get; set; }
         public string Email { get; set; }
         

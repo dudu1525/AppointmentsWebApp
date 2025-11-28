@@ -8,7 +8,7 @@ namespace api.Mappers
         public static Userdto ToUserDto(this User userModel)
         {
             return new Userdto
-            {
+            {   
                 UserName = userModel.UserName,
                 Email = userModel.Email,
                 Role = userModel.Role
@@ -18,7 +18,7 @@ namespace api.Mappers
         public static User ToUserFromAdminRegister(this RegisterAdminDto adminDto)
         {
             return new User
-            {
+            {   Name = adminDto.Name,     
                 UserName = adminDto.UserName,
                 Password = adminDto.Password,
                 Role = "Admin",

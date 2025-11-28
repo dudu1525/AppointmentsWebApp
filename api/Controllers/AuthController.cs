@@ -47,7 +47,7 @@ namespace api.Controllers
              var token = _tokenService.CreateToken(user);
 
             return Ok(new  //ill add later a dto
-            {   
+            {   Name = user.Name,
                 UserName = user.UserName,
                 Email = user.Email,
                 Role = user.Role,
@@ -79,7 +79,7 @@ namespace api.Controllers
             var token = _tokenService.CreateToken(patient.User);
             
             return Ok(new //send the id??
-            {
+            {   Name = patient.User.Name,
                 UserName = patient.User.UserName,
                 Email = patient.User.Email,
                 Role = patient.User.Role,
@@ -113,7 +113,7 @@ namespace api.Controllers
             var token = _tokenService.CreateToken(createdAdmin);
                 //return dto, so no password is returned
                  return Ok(new //add dto here
-                 {
+                 {  Name = createdAdmin.Name,
                      UserName = createdAdmin.UserName,
                      Email = createdAdmin.Email,
                      Role = createdAdmin.Role,

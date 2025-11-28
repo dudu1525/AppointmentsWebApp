@@ -17,11 +17,11 @@ namespace api.Models
 
         public String Role { get; set; } = string.Empty;
 
-
+        public String Name {get; set;} = string.Empty;
         //refferences
-        public Doctor Doctor { get; set; }
-        public Patient Patient  { get; set; }
-        public Assistant Assistant { get; set; }
+        public Doctor? Doctor { get; set; }
+        public Patient? Patient  { get; set; }
+        public Assistant? Assistant { get; set; }
         
        //admin has super abbilities, but no new fields
 

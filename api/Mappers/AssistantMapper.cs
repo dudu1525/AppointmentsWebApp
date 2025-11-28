@@ -10,9 +10,9 @@ namespace api.Mappers
         public static AssistantDetailsDto ToAssistantDetailsDto(this Assistant assistantModel)
         {
             return new AssistantDetailsDto
-            {
+            {   AssistantUserName = assistantModel.User?.UserName,
                 AssistantId = assistantModel.AssistantId,
-                AssistantName = assistantModel.User?.UserName,
+                AssistantName = assistantModel.User?.Name,
                 AssistantEmail = assistantModel.User?.Email,
                 ClinicId = assistantModel.ClinicId
             };
@@ -22,8 +22,8 @@ namespace api.Mappers
         {
 
             return new User
-            {
-                UserName = assistantDto.AssistantName,
+            {   Name= assistantDto.AssistantName,
+                UserName = assistantDto.AssistantUserName,
                 Password = assistantDto.Password,
                 Email = assistantDto.AssistantEmail,
                 Role = "Assistant"

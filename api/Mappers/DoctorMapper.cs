@@ -14,9 +14,9 @@ namespace api.Mappers
          public static DoctorDetailsDto ToDoctorDetailsDto(this Doctor doctorModel)
         {
             return new DoctorDetailsDto
-            {
+            {   DoctorUserName = doctorModel.User?.UserName,
                 DoctorId = doctorModel.DoctorId,
-                DoctorName = doctorModel.User?.UserName,
+                DoctorName = doctorModel.User?.Name,
                 Email = doctorModel.User?.Email,
                 Type = doctorModel.Type,
                 ClinicId = doctorModel.ClinicId,
@@ -31,8 +31,8 @@ namespace api.Mappers
     public static User ToUserFromCreatedDto(this CreateDoctorDto createddoctorDto)
         {
             return new User
-            {
-                UserName = createddoctorDto.DoctorName,
+            {   Name = createddoctorDto.DoctorName,
+                UserName = createddoctorDto.DoctorUserName,
                 Email = createddoctorDto.DoctorEmail,
                 Password = createddoctorDto.Password,
                 Role = "Doctor"

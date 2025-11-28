@@ -11,6 +11,7 @@ const RegisterPage = (props: Props) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
+    const [name, setName] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
 
@@ -20,7 +21,7 @@ const RegisterPage = (props: Props) => {
         setLoading(true);
     
         try {
-          await registerUser(email, username, password);
+          await registerUser(email, username, password,name);
         } catch (e) {
           setError('Invalid username or password');
         } finally {
@@ -44,6 +45,26 @@ const RegisterPage = (props: Props) => {
             )}
             
             <form className="space-y-4 md:space-y-6" onSubmit={handleRegister}>
+
+               <div>
+                <label
+                  htmlFor="name"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Name
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name" 
+                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="Full Name"
+               value={name}  
+                  onChange={(e) => setName(e.target.value)}  
+                  
+                />
+      
+              </div>
            
               <div>
                 <label

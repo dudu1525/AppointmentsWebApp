@@ -8,7 +8,7 @@ export interface AppointmentShort {
 }
 
 export type UserProfileToken = {
-  
+name: string;
 userName: string;
 email: string;
 role: string;
@@ -20,6 +20,7 @@ userId: number;
 
 
 export type User ={
+  name: string;
   userName: string;
   email: string;
   role: string;

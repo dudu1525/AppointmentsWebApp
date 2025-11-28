@@ -7,14 +7,29 @@ interface Props {}//should receive user id and patient id or smth to pass to das
 const Navbar = (props: Props) => {
 
   const {isLoggedIn, user ,logout} = useAuth();
+  let pageRole: string = "";
 
-  const handleUserTypeLoad = () =>
-  {     //switch on user and go to dashboard
-        //to=`/ ${user?.role}/${user?.userId}`  
-  };
+
+  if (user?.role) { 
+    switch (user.role) {
+      case "Patient":
+        pageRole = "patient";
+        break;
+      case "Doctor":
+        pageRole = "doctor";
+        break;
+      case "Assistant":
+        pageRole = "assistant";
+        break;
+      case "Admin":
+        pageRole = "admin";
+        break;
+    }
+  }
   
   return (
  <nav className="bg-navbarColor">
+       
       <div className="container mx-auto p-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-20">
@@ -22,7 +37,8 @@ const Navbar = (props: Props) => {
               <img src={logo} alt="" className="w-16" />
             </Link>
             <div className="hidden font-bold lg:flex">
-              <Link to="/patient/1" className="text-black hover:text-darkBlue">
+              
+              <Link to={`/${pageRole}/${user?.userId}`} className="text-black hover:text-darkBlue">
                 Dashboard 
               </Link>
             </div>

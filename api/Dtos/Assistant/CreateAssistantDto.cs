@@ -5,6 +5,11 @@ namespace api.Dtos.Assistant
     // For sending doctor data safely to the client
     public class CreateAssistantDto
     {
+              [Required]
+        [MinLength(5, ErrorMessage = "username must be at least 5 characters long!")]
+        [MaxLength(20, ErrorMessage ="username must be at most 20 characters long!")]
+        public string AssistantUserName {get;set;}
+
            [Required]
         [MinLength(5, ErrorMessage = "name must be at least 5 characters long!")]
         [MaxLength(20, ErrorMessage = "Name must be at most 20 characters long!")]

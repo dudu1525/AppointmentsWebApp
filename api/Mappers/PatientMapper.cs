@@ -8,7 +8,7 @@ namespace api.Mappers
         public static User ToUserFromCreateDto(this CreatePatientDto patientDto)
         {
             return new User
-            {
+            {   Name= patientDto.Name,
                 UserName = patientDto.UserName,
                 Email = patientDto.Email,
                 Password = patientDto.Password,

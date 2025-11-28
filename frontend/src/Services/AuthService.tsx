@@ -28,13 +28,15 @@ export const loginAPI = async(username: string, password: string) =>{
 export const registerAPI = async (
   email: string,
   username: string,
-  password: string
+  password: string,
+  name: string
 ) => {
   try {
     const data = await axios.post<UserProfileToken>(api + "/auth/register-patient", {
       email: email,
       username: username,
       password: password,
+      name: name,
     });
     return data;
   } catch (error) {

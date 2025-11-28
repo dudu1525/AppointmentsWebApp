@@ -5,6 +5,8 @@ namespace api.Dtos.Assistant
     {
         public int AssistantId { get; set; }
         public string AssistantName { get; set; }
+
+        public string AssistantUserName {get;set;}
         public string AssistantEmail { get; set; }
         public int? ClinicId { get; set; }
     }
