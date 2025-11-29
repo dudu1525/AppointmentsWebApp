@@ -20,10 +20,13 @@ namespace api.Mappers
         public static PatientDetailsDto ToPatientDetailsDto(this Patient patientModel)
         {
             return new PatientDetailsDto
-            {
+            {   UserId = patientModel.User.Id,
+
+                Name= patientModel.User.Name,
                 PatientId = patientModel.PatientId,
                 UserName = patientModel.User.UserName,
-                Email = patientModel.User.Email
+                Email = patientModel.User.Email,
+                Appointments = patientModel.Appointments
             };
         }
     }

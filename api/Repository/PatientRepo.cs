@@ -103,8 +103,11 @@ namespace api.Repository
 
         public async Task<Patient?> GetByUserIdAsync(int userId)
         {
-            return await _context.Patient.FirstOrDefaultAsync(p => p.UserId == userId); 
+            return await _context.Patient.Include(p => p.User)
+        .Include(p => p.Appointments).FirstOrDefaultAsync(p => p.UserId == userId); 
                        
                        }
+
+
     }
 }

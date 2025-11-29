@@ -34,7 +34,7 @@ namespace api.Controllers
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
             
-            var patient = await _patientRepo.GetByIdAsync(id);
+            var patient = await _patientRepo.GetByUserIdAsync(id);
 
             if (patient == null)
             {

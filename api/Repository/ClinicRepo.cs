@@ -62,7 +62,12 @@ namespace api.Repository
         public async Task<List<Clinic>> GetAllAsync()
         {
             
-            return await _dbcontext.Clinic.ToListAsync();
+             return await _dbcontext.Clinic
+        .Include(c => c.Doctors)
+            .ThenInclude(d => d.User)  
+        .Include(c => c.Assistants)
+            .ThenInclude(a => a.User)  
+        .ToListAsync();
         }
 
         public async Task<Clinic?> GetByIdAsync(int id)

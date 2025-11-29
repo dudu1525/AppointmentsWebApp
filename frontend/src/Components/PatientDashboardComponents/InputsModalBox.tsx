@@ -1,13 +1,29 @@
 import React, { useEffect, useState } from 'react'; // <-- Make sure to import useState
+import { ClinicDetailed } from '../../types/appointment';
 
 interface Props {
     visible: boolean;
     onClose: () => void;    
+    clinics: ClinicDetailed[];
 }
 
 const InputsModalBox = (props: Props) => {
-
+//for stepping the input box
   const [step, setStep] = useState(1);
+    ///for doctor and clinic
+   const [selectedClinicId, setSelectedClinicId] = useState<number | "">("");
+  const [selectedDoctorId, setSelectedDoctorId] = useState<number | "">("");
+
+  const selectedClinic = props.clinics.find(c => c.id === selectedClinicId);
+  const doctors = selectedClinic?.doctors ?? [];
+  //for date
+const [selectedDate, setSelectedDate] = useState<string>("");
+
+const [selectedTimeSlot, setSelectedTimeSlot] = useState<string>("");
+const [availableSlots, setAvailableSlots] = useState<string[]>([]);
+const timeSlots = ["09:00-10:00","10:00-11:00","11:00-12:00","12:00-13:00","13:00-14:00","14:00-15:00",];
+
+///const dateTimeForApi = selectedDate ? `${selectedDate}` : null;
 
    useEffect(() => {
     if (props.visible === false) {
@@ -48,22 +64,29 @@ const InputsModalBox = (props: Props) => {
             <div>
                 <h3 className="font-bold text-lg">Step 2: Select desired clinic and doctor</h3>
                           <br></br> 
-                    <select
+                    <select  onChange={e => setSelectedClinicId(e.target.value === "" ? "" : Number(e.target.value)) }
                         className="select select-bordered w-full py-2 border-4"defaultValue=""><option value="" disabled>Select a clinic</option>
-                            <option value="reason1">Reason 1</option>
-                             <option value="reason2">Reason 2</option>
-                              <option value="reason3">Reason 3</option></select>
+                          {props.clinics.map(clinic => (
+                     <option key={clinic.id} value={clinic.id}>
+                      {clinic.name} ({clinic.location})
+                         </option>
+            ))}
+                              </select>
                    <hr></hr>
                    <br></br> 
-                       <select
+                       <select onChange={e => setSelectedDoctorId(e.target.value === "" ? "" : Number(e.target.value))}
                         className="select select-bordered w-full py-2 border-4"defaultValue=""><option value="" disabled>Select a doctor</option>
-                            <option value="reason1">Reason 1</option>
-                             <option value="reason2">Reason 2</option>
-                              <option value="reason3">Reason 3</option></select>           
+                             {doctors.map(doctor => (
+                     <option key={doctor.doctorId} value={doctor.doctorId}>
+                       {doctor.user.name}{' - '} {doctor.type}
+                       </option>
+                                  ))}
+                              
+                              </select>           
 
 
                 <div className="modal-action mt-6">
-              <button className="btn" onClick={handleNext}>Next</button>
+              <button className="btn" onClick={handleNext} disabled={!selectedClinicId || !selectedDoctorId}>Next</button>
                 </div>
             </div>
         );
@@ -75,21 +98,35 @@ const InputsModalBox = (props: Props) => {
                 <input
              type="date"
                     className="input input-bordered w-full border-4 border-black"
+                     value={selectedDate}
+                 onChange={(e) =>{ setSelectedDate(e.target.value);
+                  console.log(e.target.value);}}
                  min={new Date().toISOString().split("T")[0]}/>
 
                         <br></br>     
                     <br></br> 
                     <select
-                        className="select select-bordered w-full py-2 border-4"defaultValue=""><option value="" disabled>Select an hour</option>
-                            <option value="reason1">Reason 1</option>
-                             <option value="reason2">Reason 2</option>
-                              <option value="reason3">Reason 3</option></select>  
+                       className="select select-bordered w-full py-2 border-4"
+                        value={selectedTimeSlot}
+                             onChange={(e) =>{ setSelectedTimeSlot(e.target.value);
+                                                console.log("time:"+e.target.value);}}
+                                          >
+                            <option value="" disabled>
+                                        Select an hour
+                                            </option>
+
+                                    {timeSlots.map((slot) => (
+                                        <option
+                                          key={slot}
+                                            value={slot}>{slot}</option>))}
+                              </select>  
                         <br></br> 
 
 
                     <br></br> 
                 <div className="modal-action mt-6" >
-              <button className="btn  border-2 border-black p-2" onClick={props.onClose}>Book Appointment!</button>
+              <button className="btn  border-2 border-black p-2" onClick={props.onClose} 
+                disabled={!selectedDate || !selectedTimeSlot}>Book Appointment!</button>
                 </div>
             </div>
         );
