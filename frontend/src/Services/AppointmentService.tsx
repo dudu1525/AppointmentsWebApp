@@ -6,12 +6,12 @@ import { Appointment, UserProfileToken } from "../types/appointment";
 const api = "http://localhost:5159/api";
 
 
-export const createAppointment = async (doctorId: number, date: Date) =>{
+export const createAppointment = async (doctorId: number, date: string) =>{
 
     try {
         const dataToSend = await axios.post<Appointment>(api + "/appointments",{
             doctorId: doctorId,
-            appointmentDateTime: date.toISOString(),
+            appointmentDateTime: date,
         })
 
       console.log("Appointment created:", dataToSend.data);

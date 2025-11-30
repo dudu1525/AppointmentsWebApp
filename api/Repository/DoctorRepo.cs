@@ -40,8 +40,8 @@ namespace api.Repository
         {
            
             var newUser = new User
-            {
-                UserName = doctorDto.DoctorName,
+            {   Name = doctorDto.DoctorName,
+                UserName = doctorDto.DoctorUserName,
                 Email = doctorDto.DoctorEmail,
                 Password = doctorDto.Password, 
                 Role = "Doctor"
@@ -51,7 +51,7 @@ namespace api.Repository
             var createdUser = await _userRepo.CreateAsync(newUser);
 
             var doctorModel = new Doctor
-            {
+            {       
                 UserId = createdUser.Id,
                 ClinicId = clinicId,
                 Type = doctorDto.Type

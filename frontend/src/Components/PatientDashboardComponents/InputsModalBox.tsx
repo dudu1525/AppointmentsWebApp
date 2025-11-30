@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'; // <-- Make sure to import useState
 import { ClinicDetailed } from '../../types/appointment';
-import { getHoursPerDayAvailable } from '../../Services/AppointmentService';
+import { createAppointment, getHoursPerDayAvailable } from '../../Services/AppointmentService';
 
 interface Props {
     visible: boolean;
@@ -61,10 +61,34 @@ const timeSlots = ["08:00","09:00","10:00","11:00","12:00","13:00","14:00",];
   fetchAvailableSlots();
 }, [selectedDate, selectedDoctorId]);  //<<signals?
 
+
+    const createAppointmentUI = async ()=>{
+      if (!selectedDate || !selectedClinic || !selectedTimeSlot || !selectedDoctorId ) return;
+
+      try{
+
+        const appointmentDateTime = `${selectedDate}T${selectedTimeSlot}:00`;
+         
+          const response = await createAppointment(selectedDoctorId,appointmentDateTime );
+
+          console.log("Created appointment:"+ response);
+
+      } catch (error){
+        console.log ("Could not create Appointment!");
+      }
+
+    }
+
+
   const handleNext = () => {
     
     setStep(step+1); 
   };
+
+  const createDate = () =>{
+
+
+  }
 
   if (props.visible==false)
   {
@@ -159,7 +183,10 @@ const timeSlots = ["08:00","09:00","10:00","11:00","12:00","13:00","14:00",];
 
                     <br></br> 
                 <div className="modal-action mt-6" >
-              <button className="btn  border-2 border-black p-2" onClick={props.onClose} 
+              <button className="btn  border-2 border-black p-2" onClick={() => {
+                                                                       createAppointmentUI();
+                                                                          props.onClose();
+                                                                                             }}
                 disabled={!selectedDate || !selectedTimeSlot}>Book Appointment!</button>
                 </div>
             </div>

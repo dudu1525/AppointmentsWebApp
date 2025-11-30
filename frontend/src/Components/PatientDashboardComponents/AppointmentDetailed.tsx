@@ -1,8 +1,12 @@
 import React from 'react'
+import { Appointment } from '../../types/appointment';
 
 type Props = {
     componentVisible: boolean;
     onClose:() => void;
+    appointment: Appointment;
+    doctor: string | undefined;
+    clinic: string | undefined;
 
 }
 
@@ -21,17 +25,17 @@ const AppointmentDetailed = (props: Props) => {
 
       
       <h2>
-            Detailed View of Appointment X
+            Detailed View of Appointment - {props.appointment.id}
       </h2>
 
       <br></br>
 
             <div className="border-2 border-black p-4">
-            <h3> Status: </h3>
+            <h3> Status: {props.appointment.status} </h3>
             <br></br>
-         <h3> Clinic: +clinic name </h3>
+         <h3> Clinic:  {props.clinic} </h3>
         <br></br>
-        <h3> Doctor: +doctorname</h3>
+        <h3> Doctor: {props.doctor} </h3>
           </div>
 
           <br></br>
@@ -39,17 +43,19 @@ const AppointmentDetailed = (props: Props) => {
          <div className="border-2 border-black p-4 min-h-[400px]">
         <h3> Diagnosis and Reccomendations</h3>
             <br></br>
-          <p>
-        Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-        Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
-        when an unknown printer took a galley of type and scrambled it to make a type
-         specimen book. It has survived not only five centuries, but also the leap into 
-         electronic typesetting, remaining essentially unchanged. It was popularised in
-     the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
-     and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+              <div>
+            { props.appointment.status==="Status Given" ? (
 
+              <p> {props.appointment.message}</p>
 
-          </p>
+            ) : (
+                <p>
+                    Patient cannot see yet the review of the doctor.
+                  </p>
+
+            )}
+            </div>
+     
         </div> 
 
 

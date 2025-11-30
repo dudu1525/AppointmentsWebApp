@@ -43,7 +43,7 @@ export type  Appointment = {
    patientId: number;
   doctorId: number;
   message: string;
-  status: 'Confirmed' | 'Pending' | 'Cancelled';
+  status: 'Confirmed' | 'Pending' | 'Cancelled' | 'Status Given';
 }
 
 

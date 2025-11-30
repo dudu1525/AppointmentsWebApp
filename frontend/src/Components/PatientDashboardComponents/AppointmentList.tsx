@@ -14,15 +14,13 @@ const AppointmentList = (props: Props) => {
     <div className="w-full border-2 border-black bg-gray-200 px-6 py-6 rounded-xl">
       <h4 className="mb-4 font-semibold text-lg">Appointments History</h4>
 
-      <div className="flex flex-col gap-2 min-h-[350px]">
+      <div className="flex flex-col gap-2 min-h-[350px] h-80 overflow-y-auto">
 
          {props.appointments.length > 0 ? (
         props.appointments.map((result) => {
           return (
             <AppointmentSimple
-              doctorId={result.doctorId}
-            date={new Date(result.appointmentDateTime)}
-         
+              appointment={result}
             />
           );
         }) ) : 

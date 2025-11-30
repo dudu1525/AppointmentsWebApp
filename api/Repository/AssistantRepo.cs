@@ -22,8 +22,8 @@ namespace api.Repository
         public async Task<Assistant> CreateAsync(CreateAssistantDto createAssistantDto, int clinicId)
         {
              var newUser = new User
-            {
-                UserName = createAssistantDto.AssistantName,
+            {   Name = createAssistantDto.AssistantName,    
+                UserName = createAssistantDto.AssistantUserName,
                 Email = createAssistantDto.AssistantEmail,
                 Password = createAssistantDto.Password, 
                 Role = "Assistant"
