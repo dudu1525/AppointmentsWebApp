@@ -13,5 +13,10 @@ namespace api.Interfaces
         Task<Appointment> CreateAsync(CreateAppointmentDto appointmentDto, int patientId);
         Task<Appointment?> UpdateAsync(int id, UpdateAppointmentDto appointmentDto);
         Task<Appointment?> DeleteAsync(int id);
+
+        Task<List<string>> GetAppointmentsFromADay(DateTime selectedDate, int doctorId);
+
+        Task <List<Appointment>> GetAppointmentsForPatient(int patientId);
+
     }
 }

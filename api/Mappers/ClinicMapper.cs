@@ -19,6 +19,19 @@ namespace api.Mappers
 
             };
         }
+
+        public static ClinicSimpleDto ToClinicSimpleDto(this Clinic clinicModel)
+        {
+                return new ClinicSimpleDto
+                {
+                    Id=clinicModel.Id,
+                    Name=clinicModel.Name,
+                    Location = clinicModel.location,
+                    
+                };
+
+
+        }
        
     
   

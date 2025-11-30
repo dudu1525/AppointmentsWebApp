@@ -58,6 +58,23 @@ namespace api.Repository
             return await query.ToListAsync();
         }
 
+        public async Task<List<Appointment>> GetAppointmentsForPatient(int patientId)
+        {
+            return await _dbcontext.Appointment.
+                Where(d => d.PatientId == patientId).ToListAsync();//here patient info is not included
+
+        }
+
+        public async Task<List<String>>? GetAppointmentsFromADay(DateTime selectedDate, int doctorId)
+        {
+            
+            return await _dbcontext.Appointment.
+            Where(d => d.DoctorId == doctorId).
+            Where(d => d.AppointmentDateTime.Date == selectedDate.Date)
+            .Select(a => a.AppointmentDateTime.ToString("HH:mm"))  
+        .ToListAsync();
+        }
+
         public async Task<Appointment?> GetByIdAsync(int id)
         {
             return await _dbcontext.Appointment

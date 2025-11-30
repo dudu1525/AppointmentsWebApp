@@ -39,6 +39,24 @@ namespace api.Mappers
             };
         }
 
+    public static DoctorSimpleDto ToDoctorSimpleDto(this Doctor doctorOriginal)
+        {
+            return new DoctorSimpleDto
+            {   DoctorUserName = doctorOriginal.User.UserName,
+                 DoctorName = doctorOriginal.User.Name,
+                DoctorId = doctorOriginal.DoctorId,
+                Email = doctorOriginal.User.Email,
+                Type = doctorOriginal.Type,
+                ClinicName = doctorOriginal.Clinic.Name,
+
+
+                 
+                    
+
+            };
+
+        }
+
        
 
 

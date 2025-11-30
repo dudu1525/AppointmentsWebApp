@@ -107,6 +107,21 @@ namespace api.Repository
 
             return existingDoctor;
         }
+
+        public async Task<Doctor?> GetDoctorAndClinic(int doctorId)
+        {
+            
+                var existingDoctor = await _dbcontext.Doctor.Include(p => p.User).Include(d => d.Clinic).FirstOrDefaultAsync(p => p.DoctorId == doctorId);
+
+            if (existingDoctor == null)
+            {
+                return null; 
+            }
+
+            return existingDoctor;
+
+
+        }
     }
 
 

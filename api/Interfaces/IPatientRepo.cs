@@ -13,7 +13,7 @@ namespace api.Interfaces
         
         Task<Patient?> GetByUserIdAsync(int userId);
 
-
+        
 
     }
 }

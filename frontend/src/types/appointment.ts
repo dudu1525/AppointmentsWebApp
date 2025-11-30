@@ -1,3 +1,4 @@
+import { StringLiteral } from "typescript";
 
 
 export type UserProfileToken = {
@@ -18,10 +19,27 @@ assistants: Assistant[];
 
 }
 
+export type ClinicSimple = {
+  id: number;
+  name: string;
+  location: string;
+}
+
+export type DoctorAndClinic = {
+doctorUserName: string;
+doctorId: number;
+doctorName: string;
+email: string;
+type: string;
+clinicName: string;
+
+
+}
+
 
 export type  Appointment = {
   id: number;
-    date: Date;
+    appointmentDateTime: Date;
    patientId: number;
   doctorId: number;
   message: string;

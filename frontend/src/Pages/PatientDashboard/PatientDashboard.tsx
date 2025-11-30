@@ -5,9 +5,10 @@ import InputsModalBox from '../../Components/PatientDashboardComponents/InputsMo
 import AppointmentList from '../../Components/PatientDashboardComponents/AppointmentList'
 import AppointmentDetailed from '../../Components/PatientDashboardComponents/AppointmentDetailed'
 import { useAuth } from '../../Context/UserAuth'
-import { ClinicDetailed, Patient } from '../../types/appointment'
+import { Appointment, ClinicDetailed, Patient } from '../../types/appointment'
 import {getPatientByUserId} from '../../Services/PatientService'
 import { getClinicsDetailed } from '../../Services/ClinicService'
+import { getAppointmentsForPatient } from '../../Services/AppointmentService'
 interface Props  {}
 
 const PatientDashboard = (props: Props) => {
@@ -17,6 +18,8 @@ const PatientDashboard = (props: Props) => {
   const {user} = useAuth();
     const [patient, setPatient] = useState<Patient | null>(null);
     const [clinics, setClinics] = useState<ClinicDetailed[]>([]);
+
+    const [patientAppointments, setPatientAppointments] = useState <Appointment[]>([]);
 
     
 useEffect(() => {
@@ -39,9 +42,32 @@ useEffect(() => {
    console.log("clinic:", responseClinics.data.at(0)?.name);
   }
 
+
   fetchPatient();
   fetchAllClinics();
 }, [user?.userId])
+
+
+
+useEffect(() => {
+  const fetchAppointmentsforPatient = async () => {
+    if (!patient?.patientId) {
+      return; // patient not loaded yet
+    }
+
+    try {
+      const requestAppointments = await getAppointmentsForPatient(patient.patientId);
+      if (requestAppointments) {
+        setPatientAppointments(requestAppointments);
+        console.log("appointments response:", requestAppointments);
+      }
+    } catch (error) {
+      console.log("something went wrong when fetching appointments!", error);
+    }
+  };
+
+  fetchAppointmentsforPatient();
+}, [patient?.patientId]);
 
 
 
@@ -75,7 +101,7 @@ useEffect(() => {
 
 
        <div className="py-6">           
-                  <AppointmentList/>
+                  <AppointmentList appointments={patientAppointments}/>
      </div>
 
 

@@ -18,8 +18,12 @@ namespace api.Interfaces
 
       Task<Doctor?> DeleteDoctorAsync(int id);
 
+      Task<Doctor?> GetDoctorAndClinic(int doctorId);
+ 
 
   }
+
+
 
 
 }

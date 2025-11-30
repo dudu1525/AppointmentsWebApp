@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'; // <-- Make sure to import useState
 import { ClinicDetailed } from '../../types/appointment';
+import { getHoursPerDayAvailable } from '../../Services/AppointmentService';
 
 interface Props {
     visible: boolean;
@@ -21,7 +22,7 @@ const [selectedDate, setSelectedDate] = useState<string>("");
 
 const [selectedTimeSlot, setSelectedTimeSlot] = useState<string>("");
 const [availableSlots, setAvailableSlots] = useState<string[]>([]);
-const timeSlots = ["09:00-10:00","10:00-11:00","11:00-12:00","12:00-13:00","13:00-14:00","14:00-15:00",];
+const timeSlots = ["08:00","09:00","10:00","11:00","12:00","13:00","14:00",];
 
 ///const dateTimeForApi = selectedDate ? `${selectedDate}` : null;
 
@@ -29,7 +30,36 @@ const timeSlots = ["09:00-10:00","10:00-11:00","11:00-12:00","12:00-13:00","13:0
     if (props.visible === false) {
       setStep(1);
     }
+
+
+
+
   }, [props.visible]);
+
+  useEffect(() => {
+  const fetchAvailableSlots = async () => {
+    if (!selectedDate || !selectedDoctorId) return; 
+
+    try {
+
+       const dateObj = new Date(selectedDate);
+            const bookedHours = await getHoursPerDayAvailable(
+                selectedDoctorId as number, 
+                dateObj
+            );
+            
+            setAvailableSlots(bookedHours ?? []);
+             setSelectedTimeSlot("");
+
+
+    } catch (err) {
+      console.error("Error fetching time slots", err);
+      setAvailableSlots([]);
+    }
+  };
+
+  fetchAvailableSlots();
+}, [selectedDate, selectedDoctorId]);  //<<signals?
 
   const handleNext = () => {
     
@@ -118,7 +148,11 @@ const timeSlots = ["09:00-10:00","10:00-11:00","11:00-12:00","12:00-13:00","13:0
                                     {timeSlots.map((slot) => (
                                         <option
                                           key={slot}
-                                            value={slot}>{slot}</option>))}
+                                            value={slot}
+                                        disabled={availableSlots.includes(slot)} >
+                                          {slot} {availableSlots.includes(slot) ? "(Booked)" : ""}
+                                            </option>))}
+                                           
                               </select>  
                         <br></br> 
 

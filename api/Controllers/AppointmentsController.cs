@@ -41,6 +41,21 @@ namespace api.Controllers
             return CreatedAtAction(nameof(GetById), new { id = appointmentModel.Id }, appointmentModel);
         }
 
+
+        [HttpGet("doctor/{doctorId}/day")]
+        public async Task<IActionResult> GetAppointmentsFromADay([FromQuery] DateTime selectedDate, [FromRoute] int doctorId)
+        {
+            var appointments = await _appointmentRepo.GetAppointmentsFromADay(selectedDate, doctorId);
+            return Ok(appointments);
+        }
+
+        [HttpGet("patient/{patientId}")]
+        public async Task<IActionResult> GetAppointmentsForPatient( [FromRoute] int patientId)
+        {
+            var appointments = await _appointmentRepo.GetAppointmentsForPatient(patientId);
+            return Ok(appointments);
+        }
+
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {

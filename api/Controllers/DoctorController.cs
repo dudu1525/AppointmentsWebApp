@@ -43,6 +43,17 @@ namespace api.Controllers
          return Ok(doctor.ToDoctorDetailsDto());
         }
 
+        [HttpGet("clinics/{id:int}")]
+
+        public async  Task<IActionResult> GetDoctorAndClinic([FromRoute] int id)
+        {
+            var doctor = await doctorrepo.GetDoctorAndClinic(id);
+            if (doctor == null)
+                return NotFound();
+         return Ok(doctor.ToDoctorSimpleDto());
+        }
+
+
         [HttpPost("{clinicId:int}")]
        public async Task<IActionResult> CreateDoctor([FromRoute] int clinicId, [FromBody] CreateDoctorDto registerDto)
         {

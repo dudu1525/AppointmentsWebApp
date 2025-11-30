@@ -36,7 +36,7 @@ namespace api.Controllers
             var clinic = await clinicrepo.GetByIdAsync(id);
             if (clinic == null) return NotFound();
 
-            return Ok(clinic.ToClinicDetailsDto());
+            return Ok(clinic.ToClinicSimpleDto());
         }
 
         [HttpGet]
