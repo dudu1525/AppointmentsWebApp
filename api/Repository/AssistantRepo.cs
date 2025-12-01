@@ -75,6 +75,12 @@ namespace api.Repository
              return await _dbcontext.Assistant.Include(d => d.User).FirstOrDefaultAsync(d => d.AssistantId == id);
         }
 
+        public async Task<Assistant?> GetByUserIdAsync(int id)
+        {
+            return await _dbcontext.Assistant.Include(p => p.User)
+        .FirstOrDefaultAsync(p => p.UserId == id); 
+        }
+
         public async Task<Assistant?> UpdateAsync(int id, UpdateAssistantDto assistantDto)
         {
             var existingAssistant = await _dbcontext.Assistant.Include(p => p.User).FirstOrDefaultAsync(p => p.AssistantId == id);

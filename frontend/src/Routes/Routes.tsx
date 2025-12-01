@@ -8,7 +8,7 @@ import PatientDashboard from "../Pages/PatientDashboard/PatientDashboard";
 import Unauthorized from "../Pages/UnauthorizedPage";
 import ProtectedRoute from "./ProtectedRoute";
 import DoctorDashboard from "../Pages/DoctorDashboard/DoctorDashboard";
-import AssistantPage from "../Pages/AssistantPage";
+import AssistantPage from "../Pages/AssistantDashboard";
 import AdminDashboard from "../Pages/AdminDashboard";
 
 

@@ -91,7 +91,19 @@ namespace api.Controllers
             return Ok(assistantModel.ToAssistantDetailsDto());
         }
 
+     [HttpGet("usr/{id:int}")]
+        public async Task<IActionResult> GetByUserId([FromRoute] int id)
+        {
+            
+            var assistant = await assistantRepo.GetByUserIdAsync(id);
 
+            if (assistant == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(assistant.ToAssistantDetailsDto());
+        }
 
 
 

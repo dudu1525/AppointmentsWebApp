@@ -95,5 +95,19 @@ namespace api.Repository
             await _dbcontext.SaveChangesAsync();
             return existingAppointment;
         }
+
+
+        public async Task<List<Appointment>> GetAppointmentsByClinicAndStatusAsync(int clinicId,string status)
+        {
+            return await _dbcontext.Appointment
+                .Include(a => a.Doctor).ThenInclude(a =>a.User)
+                    .Include(a => a.Patient).ThenInclude(a =>a.User)
+                    .Where(a => a.Doctor != null
+                            && a.Doctor.ClinicId == clinicId
+                            && a.Status == status)
+                                .ToListAsync();
+        }
+
+
     }
 }

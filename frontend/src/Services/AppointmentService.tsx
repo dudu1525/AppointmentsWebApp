@@ -1,5 +1,5 @@
 import axios from "axios"
-import { Appointment, UserProfileToken } from "../types/appointment";
+import { Appointment, AppointmentFull, UserProfileToken } from "../types/appointment";
 
 
 
@@ -55,6 +55,22 @@ export const getAppointmentsForPatient = async (patientId: number) =>{
    }catch (error)
         {
              console.log("Wrong when fetching patient appointments!");
+        }
+
+}
+
+export const getAppointmentsByClinicAndStatus = async (clinicId: number, status: string) =>{
+
+    try {
+        const response = await axios.get<AppointmentFull[]>(`${api}/appointments/clinic/status/${clinicId}`);
+
+
+            console.log("Appointments for clinic: ", response.data);
+                     return response.data; 
+
+   }catch (error)
+        {
+             console.log("Wrong when fetching clinic appointments!");
         }
 
 }

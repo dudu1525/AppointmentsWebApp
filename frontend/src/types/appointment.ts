@@ -9,13 +9,22 @@ role: string;
 token: string;
 userId: number;
 }
+export type AssistantSimple = {
+assistantUserName: string;
+assistantId: number;
+assistantName: string;
+assistantEmail: string;
+clinicId: number;
 
+
+
+}
 export type ClinicDetailed = {
 id: number;
 name: string;
 location: string;
 doctors: Doctor[];
-assistants: Assistant[];
+assistants: AssistantSimple[];
 
 }
 
@@ -43,9 +52,10 @@ export type  Appointment = {
    patientId: number;
   doctorId: number;
   message: string;
-  status: 'Confirmed' | 'Pending' | 'Cancelled' | 'Status Given';
+  status: 'Confirmed' | 'Pending' | 'Cancelled' | 'Status Written' | 'Status Given';
 }
-
+//writeen is by the doctor
+//given is by the assistant
 
 
 export type Doctor = {
@@ -62,7 +72,7 @@ export type Doctor = {
 }
 
 
-export type Assistant = {
+export type AssistantDetailed = {
 id: number;
   userId: number;
   clinic?: ClinicDetailed | null;
@@ -91,5 +101,19 @@ export type Patient  = {
  name: string;
  email: string;
  appointments: Appointment[];
+
+}
+
+export type AppointmentFull = {
+id: number;
+appointmentDateTime: Date;
+status: string;
+message: string;
+doctorId: number;
+doctorName: string;
+doctorType: string;
+patientId: number;
+patientName: string;
+
 
 }

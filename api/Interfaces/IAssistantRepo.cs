@@ -18,7 +18,7 @@ namespace api.Interfaces
 
       Task<Assistant?> DeleteAssistantAsync(int id);
 
-
+     Task<Assistant?> GetByUserIdAsync(int id);
   }
 
 

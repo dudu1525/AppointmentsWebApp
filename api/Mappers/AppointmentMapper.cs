@@ -48,5 +48,24 @@ namespace api.Mappers
                   PatientName = appointmentModel.Patient?.User?.UserName
               };
         }
+
+        public static AppointmentFullDto ToFullAppointment(this Appointment appointmentModel)
+        {
+                return new AppointmentFullDto
+                {
+                  Id = appointmentModel.Id,
+            AppointmentDateTime = appointmentModel.AppointmentDateTime,
+            Status = appointmentModel.Status,
+            Message = appointmentModel.Message,
+            DoctorId = appointmentModel.DoctorId,
+            DoctorName = appointmentModel.Doctor?.User?.Name,
+            DoctorType = appointmentModel.Doctor?.Type,
+            PatientId = appointmentModel.PatientId,
+            PatientName = appointmentModel.Patient?.User?.Name  
+
+                };
+
+
+        }
     }
 }

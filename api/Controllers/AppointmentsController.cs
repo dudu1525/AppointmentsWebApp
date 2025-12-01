@@ -66,6 +66,20 @@ namespace api.Controllers
             
             return Ok(appointment.ToAppointmentDetailsDto());
         }
+
+
+        [HttpGet("clinic/status/{clinicId:int}")]
+        public async Task<IActionResult> GetAppointmentsForClinic([FromRoute] int clinicId,[FromQuery] string status)
+            {   
+        var appointments = await _appointmentRepo.GetAppointmentsByClinicAndStatusAsync(clinicId, status);
+
+              if (appointments == null || !appointments.Any())
+                return NotFound();
+
+                var dtoList = appointments.Select(a => a.ToFullAppointment()).ToList();
+
+                        return Ok(dtoList);
+            }
         
         
 
