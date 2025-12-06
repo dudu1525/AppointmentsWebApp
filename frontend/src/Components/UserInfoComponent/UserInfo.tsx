@@ -12,7 +12,7 @@ const UserInfo = (props: Props) => {
       case 'patient':
         return 'My Appointments'
       case 'doctor':
-        return 'Patient Schedule'
+        return 'Review Patients Appointments'
       case 'admin':
         return 'Admin Dashboard'
       case 'assistant':

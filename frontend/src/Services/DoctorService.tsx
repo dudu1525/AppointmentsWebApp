@@ -1,5 +1,5 @@
 import axios from "axios"
-import { DoctorAndClinic, UserProfileToken } from "../types/appointment";
+import { DoctorAndClinic, DoctorSimple, UserProfileToken } from "../types/appointment";
 
 
 
@@ -20,3 +20,9 @@ export const getDoctorAndClinic = async (doctorId:number) =>{
 
 
 }
+
+
+export const getDoctorByUserId = (userId: number) => {
+  return axios.get<DoctorSimple>(`${api}/doctors/usr/${userId}`);
+  
+};

@@ -117,3 +117,13 @@ patientName: string;
 
 
 }
+
+export type DoctorSimple ={
+doctorUserName: string;
+doctorId: number;
+doctorName: string;
+doctorEmail: string;
+clinicId: number;
+
+
+}
