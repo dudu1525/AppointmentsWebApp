@@ -4,6 +4,7 @@ using api.Interfaces;
 using api.Mappers;
 using api.Models;
 using api.Repository;
+using Humanizer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ActionConstraints;
 using Microsoft.EntityFrameworkCore;
@@ -106,6 +107,19 @@ namespace api.Controllers
             }
             
             return Ok(doctorModel.ToDoctorDetailsDto());
+        }
+
+
+        [HttpGet("usr/{userId:int}")]
+        public async Task<IActionResult> GetDoctorByUserId([FromRoute] int userId)
+        {
+            var doctor = await doctorrepo.GetDoctorByUserId(userId);
+            if (doctor==null)
+            {
+                return NotFound();
+            }
+            return Ok(doctor.ToDoctorSimpleDto());
+
         }
 
 

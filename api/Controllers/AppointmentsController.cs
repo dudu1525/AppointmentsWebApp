@@ -107,6 +107,23 @@ namespace api.Controllers
         }
 
 
+        [HttpGet("doctorget/{doctorId:int}")]
+        public async Task<IActionResult> GetAppointmentsByDoctorId([FromRoute] int doctorId)
+        {
+            var appointments = await _appointmentRepo.GetByDoctorIdAsync(doctorId);
+
+            if (appointments==null)
+            {
+                return NotFound();
+            }
+
+           var dtoList = appointments.Select(a => a.ToFullAppointment()).ToList();
+
+                        return Ok(dtoList);
+
+        }
+
+
     }
 
 

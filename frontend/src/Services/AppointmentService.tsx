@@ -120,3 +120,20 @@ export const updateAppointmentMessage = async (appointmentId: number, message: s
     }
 
 }
+
+export const getAppointmentsByDoctorId = async (doctorId: number) =>{
+
+
+    try {
+        const response = await axios.get<AppointmentFull[]>(`${api}/appointments/doctorget/${doctorId}`);
+
+
+            console.log("Appointments for doctor: ", response.data);
+                     return response.data; 
+
+
+    } catch (error)
+    {
+        console.log("Error getting appointments by doctor id!");
+    }
+}

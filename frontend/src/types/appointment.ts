@@ -123,7 +123,8 @@ doctorUserName: string;
 doctorId: number;
 doctorName: string;
 doctorEmail: string;
-clinicId: number;
+type: string;
+clinicName: string;
 
 
 }

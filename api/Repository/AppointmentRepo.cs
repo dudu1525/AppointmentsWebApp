@@ -141,5 +141,19 @@ namespace api.Repository
 
                 return appointment;
         }
+
+        public async Task<List<Appointment>> GetByDoctorIdAsync(int doctorId)
+        {
+            var appointment = await _dbcontext.Appointment
+                    .Include(a => a.Doctor).ThenInclude(d => d.User)
+              .Include(a => a.Patient).ThenInclude(p => p.User)
+                     .Where(a => a.DoctorId == doctorId).ToListAsync();
+
+            if (appointment==null )
+            return null;
+
+            return appointment;
+
+        }
     }
 }

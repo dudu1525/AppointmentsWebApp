@@ -122,6 +122,12 @@ namespace api.Repository
 
 
         }
+
+        public async Task<Doctor?> GetDoctorByUserId(int userId)
+        {
+             return await _dbcontext.Doctor.Include(p => p.User).Include(p => p.Clinic)
+                 .FirstOrDefaultAsync(p => p.UserId == userId); 
+        }
     }
 
 

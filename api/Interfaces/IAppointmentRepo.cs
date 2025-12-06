@@ -24,5 +24,7 @@ namespace api.Interfaces
 
         Task <Appointment> UpdateAppointmentMessage(int appointmentId, string message);
 
+        Task<List<Appointment>> GetByDoctorIdAsync(int doctorId);
+
     }
 }

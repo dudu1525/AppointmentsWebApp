@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useAuth } from '../../Context/UserAuth';
-import { DoctorSimple } from '../../types/appointment';
+import { AppointmentFull, DoctorSimple } from '../../types/appointment';
 import { getDoctorByUserId } from '../../Services/DoctorService';
 import UserInfo from '../../Components/UserInfoComponent/UserInfo';
+import { getAppointmentsByDoctorId } from '../../Services/AppointmentService';
 
 interface Props  {
 
@@ -14,12 +15,14 @@ const DoctorDashboard = (props: Props) => {
 const {user} = useAuth();
  const [doctor, setDoctor] = useState<DoctorSimple | undefined>();
 
+  const [confirmedAppointments, setConfirmedAppointments] = useState <AppointmentFull[]>([]); //get confirmed appointments of a doctor
+
    useEffect(() => {
    const fetchDoctor = async () => {
      if (user?.userId) {  
        try {
          console.log("user id:"+user.userId);
-             const response = await getDoctorByUserId(user.userId);
+             const response = await getDoctorByUserId(user.userId); //also need TO FILTER TO GET CONFIRMED ONES!!!!!!!
          setDoctor(response.data); 
          console.log(response.data);
        } catch (error) {
@@ -30,6 +33,30 @@ const {user} = useAuth();
    fetchDoctor();
  
  }, [user?.userId])
+
+
+ useEffect(() =>{
+    const fetchAppointments = async () => {
+      
+       try {
+              if (!doctor)
+                return null;
+ 
+             const writtenapps = await getAppointmentsByDoctorId(doctor?.doctorId);
+              console.log(writtenapps);
+             if (writtenapps)
+               setConfirmedAppointments(writtenapps);
+ 
+              
+           
+       }catch (error)
+         {
+           console.log("couldnt fetch pending appointments!");
+         }
+ 
+   };
+   fetchAppointments(); //need to recall pending appointments after declining or accepting one!
+ }, [doctor?.doctorId]);
 
 
 
