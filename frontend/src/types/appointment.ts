@@ -52,9 +52,9 @@ export type  Appointment = {
    patientId: number;
   doctorId: number;
   message: string;
-  status: 'Confirmed' | 'Pending' | 'Cancelled' | 'Status Written' | 'Status Given';
+  status: 'Confirmed' | 'Pending' | 'Cancelled' | 'Finished' | 'Status Written' | 'Status Given';
 }
-//writeen is by the doctor
+//writeen is by the doctor, after marking it as finished
 //given is by the assistant
 
 

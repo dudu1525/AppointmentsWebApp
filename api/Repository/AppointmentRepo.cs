@@ -108,6 +108,38 @@ namespace api.Repository
                                 .ToListAsync();
         }
 
+        public async Task<Appointment> UpdateAppointmentStatus(int appointmentId, string status)
+        {
+           var appointment = await _dbcontext.Appointment
+        .Include(a => a.Doctor).ThenInclude(d => d.User)
+        .Include(a => a.Patient).ThenInclude(p => p.User)
+        .FirstOrDefaultAsync(a => a.Id == appointmentId);
 
+             if (appointment == null)
+                     return null;
+
+                 appointment.Status = status;
+             await _dbcontext.SaveChangesAsync();
+
+                return appointment;
+
+
+        }
+
+        public async Task<Appointment> UpdateAppointmentMessage(int appointmentId, string message)
+        {
+            var appointment = await _dbcontext.Appointment
+                    .Include(a => a.Doctor).ThenInclude(d => d.User)
+              .Include(a => a.Patient).ThenInclude(p => p.User)
+        .FirstOrDefaultAsync(a => a.Id == appointmentId);
+
+             if (appointment == null)
+                     return null;
+
+                 appointment.Message = message;
+             await _dbcontext.SaveChangesAsync();
+
+                return appointment;
+        }
     }
 }

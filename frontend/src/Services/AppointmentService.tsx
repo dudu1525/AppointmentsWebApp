@@ -62,15 +62,61 @@ export const getAppointmentsForPatient = async (patientId: number) =>{
 export const getAppointmentsByClinicAndStatus = async (clinicId: number, status: string) =>{
 
     try {
-        const response = await axios.get<AppointmentFull[]>(`${api}/appointments/clinic/status/${clinicId}`);
+        const response = await axios.get<AppointmentFull[]>(`${api}/appointments/clinic/status/${clinicId}?status=${status}`);
 
 
             console.log("Appointments for clinic: ", response.data);
                      return response.data; 
 
    }catch (error)
-        {
+        {     
              console.log("Wrong when fetching clinic appointments!");
+          
         }
+
+}
+
+
+export const updateAppointmentStatus = async (appointmentId: number, status: string) =>{
+
+    try {
+            const response = await axios.put<AppointmentFull>(
+                `${api}/appointments/updateStatus/${appointmentId}`,
+                  JSON.stringify(status),  
+                 {
+                  headers: {
+          'Content-Type': 'application/json'  
+                 }
+                 }
+                );
+
+            return response.data;
+
+    }catch(error)
+    {
+        console.log("error updating appointment status");
+    }
+
+}
+
+export const updateAppointmentMessage = async (appointmentId: number, message: string) =>{
+
+    try {
+           const response = await axios.put<AppointmentFull>(
+                `${api}/appointments/updateMessage/${appointmentId}`,
+                  JSON.stringify(message),  
+                 {
+                  headers: {
+          'Content-Type': 'application/json'  
+                 }
+                 }
+                );
+
+            return response.data;
+
+    }catch(error)
+    {
+        console.log("error updating appointment message");
+    }
 
 }

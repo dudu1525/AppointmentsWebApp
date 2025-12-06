@@ -11,6 +11,6 @@ export const getClinicsDetailed = () => {
 
 export const getClinicById = (id: number) =>{
 
-return axios.get<ClinicSimple[]>(`${api}/clinics/${id}`);
+return axios.get<ClinicSimple>(`${api}/clinics/${id}`);
 
 }

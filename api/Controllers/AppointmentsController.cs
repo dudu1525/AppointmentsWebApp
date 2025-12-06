@@ -82,7 +82,29 @@ namespace api.Controllers
             }
         
         
+        [HttpPut("updateStatus/{appointmentId:int}")]
+        public async Task<IActionResult> UpdateAppointmentStatus([FromRoute] int appointmentId, [FromBody] string status)
+        {
+            var appointment = await _appointmentRepo.UpdateAppointmentStatus(appointmentId, status);
 
+            if (appointment== null)
+            return NotFound();
+
+            var appointmentFull = appointment.ToFullAppointment();
+            return Ok (appointmentFull);
+        }
+
+        [HttpPut("updateMessage/{appointmentId:int}")]
+        public async Task<IActionResult> UpdateAppointmentMessage([FromRoute] int appointmentId, [FromBody] string message)
+        {
+            var appointment = await _appointmentRepo.UpdateAppointmentMessage(appointmentId, message);
+
+            if (appointment== null)
+            return NotFound();
+
+            var appointmentFull = appointment.ToFullAppointment();
+            return Ok (appointmentFull);
+        }
 
 
     }

@@ -20,5 +20,9 @@ namespace api.Interfaces
 
         Task<List<Appointment>> GetAppointmentsByClinicAndStatusAsync(int clinicId,string status);
 
+        Task <Appointment> UpdateAppointmentStatus(int appointmentId, string status);
+
+        Task <Appointment> UpdateAppointmentMessage(int appointmentId, string message);
+
     }
 }
