@@ -3,7 +3,8 @@ import { useAuth } from '../../Context/UserAuth';
 import { AppointmentFull, DoctorSimple } from '../../types/appointment';
 import { getDoctorByUserId } from '../../Services/DoctorService';
 import UserInfo from '../../Components/UserInfoComponent/UserInfo';
-import { getAppointmentsByDoctorId } from '../../Services/AppointmentService';
+import { getAppointmentsByDoctorId, updateAppointmentMessage, updateAppointmentStatus } from '../../Services/AppointmentService';
+import GivePresciptionBox from '../../Components/DoctorDashboardComponents/GivePresciptionBox';
 
 interface Props  {
 
@@ -17,6 +18,10 @@ const {user} = useAuth();
 
   const [confirmedAppointments, setConfirmedAppointments] = useState <AppointmentFull[]>([]); //get confirmed appointments of a doctor
 
+  const [selectedAppointment, setSelectedAppointment] = useState<number>(0); //state of review box
+    const [selApp, setSelApp] = useState<number>(0); //marks the selected appointment
+  
+ var selectedAppObj = confirmedAppointments.find(app => app.id === selApp);
    useEffect(() => {
    const fetchDoctor = async () => {
      if (user?.userId) {  
@@ -34,6 +39,35 @@ const {user} = useAuth();
  
  }, [user?.userId])
 
+      const formatDate = (date: Date) => {
+  return date.toLocaleString('en-GB', {
+    day: '2-digit',
+    month: 'short', 
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+    timeZone: 'Europe/Bucharest'
+  }).replace(',', ''); 
+};
+
+   const updateAppointmentMessageHere = async(appointmentId: number, message: string) =>{
+
+    const response = await updateAppointmentMessage(appointmentId, message);
+    const response2 = await updateAppointmentStatus(appointmentId, "Status Written");
+      
+       if (doctor?.doctorId) {
+    const apps = await getAppointmentsByDoctorId(doctor.doctorId);
+        if (apps!=undefined)
+   { const confirmed = apps.filter(a => a.status === "Confirmed");
+    setConfirmedAppointments(confirmed);}
+  }
+
+  setSelectedAppointment(0);
+  setSelApp(0);
+
+   }
+
 
  useEffect(() =>{
     const fetchAppointments = async () => {
@@ -45,7 +79,10 @@ const {user} = useAuth();
              const writtenapps = await getAppointmentsByDoctorId(doctor?.doctorId);
               console.log(writtenapps);
              if (writtenapps)
-               setConfirmedAppointments(writtenapps);
+               {
+                const confirmed = writtenapps.filter(a => a.status === "Confirmed");
+                  setConfirmedAppointments(confirmed);
+               }
  
               
            
@@ -73,6 +110,47 @@ const {user} = useAuth();
           <UserInfo userRole="doctor" userName={user.name} />
    <br></br>
       <h5 className="mb-4 font-semibold text-lg text-center text-darkBlue"> Provide Patients with appointment prescriptions and follow-ups:</h5>
+
+
+
+        
+      <div className="flex justify-center">
+       <select
+  value={selApp === 0 ? "" : selApp}
+  onChange={e => {
+    setSelectedAppointment(1);
+    setSelApp(Number(e.target.value));
+  }} className="select select-bordered w-full py-2 border-4 text-center max-w-[500px] justify-center"defaultValue=""><option value="" disabled>Select a written appointment</option>
+                              {
+                                confirmedAppointments.map(app =>
+                                    <option key={app.id} value = {app.id} >
+                                      {app.patientName} {' ('}
+                                             {  formatDate(new Date (app.appointmentDateTime))}      {' )'}
+
+                                    </option>
+                                )
+
+                              }
+                              </select>
+
+      </div>
+
+                              <br/>
+            <GivePresciptionBox state={selectedAppointment} onUpdate={updateAppointmentMessageHere}
+       stateChanged={setSelectedAppointment}  appointment={selectedAppObj}  />
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
             </div>
