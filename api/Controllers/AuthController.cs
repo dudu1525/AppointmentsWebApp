@@ -118,12 +118,14 @@ namespace api.Controllers
                      Email = createdAdmin.Email,
                      Role = createdAdmin.Role,
                     Token = token,
-
+                    UserId = createdAdmin.Id, 
 
                  });
 
         }
 
+
+        //delete an user
        
     }
 }

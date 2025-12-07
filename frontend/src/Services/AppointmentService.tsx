@@ -6,19 +6,27 @@ import { Appointment, AppointmentFull, UserProfileToken } from "../types/appoint
 const api = "http://localhost:5159/api";
 
 
-export const createAppointment = async (doctorId: number, date: string) =>{
+export const createAppointment = async (doctorId: number, date: string, token:string) =>{
 
     try {
         const dataToSend = await axios.post<Appointment>(api + "/appointments",{
             doctorId: doctorId,
             appointmentDateTime: date,
-        })
+        }, {headers:{
+            Authorization: `Bearer ${token}`
+        }})
 
       console.log("Appointment created:", dataToSend.data);
     return dataToSend.data; 
     }catch (error)
     {
+         
         console.log("Something went wrong while creatign appointment!");
+        console.log("Sending to server:", {
+         doctorId,
+             appointmentDateTime: date,
+                });
+        throw error;
     }
 
 }

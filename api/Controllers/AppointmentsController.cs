@@ -26,7 +26,7 @@ namespace api.Controllers
         [HttpPost]
         [Authorize(Roles = "Patient")] //patients can create appointments
         public async Task<IActionResult> Create([FromBody] CreateAppointmentDto appointmentDto)
-        {
+        {   
                 //get user id of the login
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (userIdClaim == null) return Unauthorized();

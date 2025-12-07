@@ -7,7 +7,7 @@ interface Props {
     onClose: () => void;    
     clinics: ClinicDetailed[];
 }
-
+const token = localStorage.getItem("token");
 const InputsModalBox = (props: Props) => {
 //for stepping the input box
   const [step, setStep] = useState(1);
@@ -69,7 +69,7 @@ const timeSlots = ["08:00","09:00","10:00","11:00","12:00","13:00","14:00",];
 
         const appointmentDateTime = `${selectedDate}T${selectedTimeSlot}:00`;
          
-          const response = await createAppointment(selectedDoctorId,appointmentDateTime );
+          const response = await createAppointment(selectedDoctorId,appointmentDateTime,token! );
 
           console.log("Created appointment:"+ response);
 

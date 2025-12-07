@@ -43,3 +43,23 @@ export const registerAPI = async (
     console.log("Error creating account!");
   }
 };
+
+
+export const createAdmin = async (email: string,
+  username: string,
+  password: string,
+  name: string) => {
+
+    try {
+      const data = await axios.post(api+ "/auth/create-admin", {email: email,
+      username: username,
+      password: password,
+      name: name, })
+
+    } catch (error)
+    {
+      console.log ("Error while creatign admin");
+    }
+
+
+}
