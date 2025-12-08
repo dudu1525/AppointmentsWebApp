@@ -10,6 +10,6 @@ public class PatientDetailsDto
     public string Email { get; set; }
 
     public string? MedicalRecord {get;set;}
-     public List<Appointment> Appointments { get; set; } = new List<Appointment>();
+    // public List<Appointment> Appointments { get; set; } = new List<Appointment>();
 
 }

@@ -51,6 +51,9 @@ namespace api.Repository
 
             
             existingPatient.User.UserName = patientDto.UserName;
+            existingPatient.User.Name=patientDto.Name;
+            existingPatient.MedicalRecord=patientDto.MedicalRecord;
+            existingPatient.User.Email = patientDto.Email;
 
             await _context.SaveChangesAsync();
 

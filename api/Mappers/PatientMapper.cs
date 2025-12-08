@@ -26,7 +26,7 @@ namespace api.Mappers
                 PatientId = patientModel.PatientId,
                 UserName = patientModel.User.UserName,
                 Email = patientModel.User.Email,
-                Appointments = patientModel.Appointments
+                //Appointments = patientModel.Appointments
             };
         }
     }
