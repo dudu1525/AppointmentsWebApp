@@ -1,5 +1,5 @@
 import axios from "axios"
-import { ClinicDetailed, ClinicSimple } from "../types/appointment";
+import { ClinicDetailed, ClinicSimple } from "../types/normalTypes";
 const api = "http://localhost:5159/api";
 
 

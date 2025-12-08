@@ -5,7 +5,7 @@ import InputsModalBox from '../../Components/PatientDashboardComponents/InputsMo
 import AppointmentList from '../../Components/PatientDashboardComponents/AppointmentList'
 import AppointmentDetailed from '../../Components/PatientDashboardComponents/AppointmentDetailed'
 import { useAuth } from '../../Context/UserAuth'
-import { Appointment, ClinicDetailed, Patient } from '../../types/appointment'
+import { Appointment, ClinicDetailed, Patient } from '../../types/normalTypes'
 import {getPatientByUserId} from '../../Services/PatientService'
 import { getClinicsDetailed } from '../../Services/ClinicService'
 import { getAppointmentsForPatient } from '../../Services/AppointmentService'

@@ -21,7 +21,7 @@ namespace api.Mappers
         {
             return new PatientDetailsDto
             {   UserId = patientModel.User.Id,
-
+                MedicalRecord = patientModel.MedicalRecord,
                 Name= patientModel.User.Name,
                 PatientId = patientModel.PatientId,
                 UserName = patientModel.User.UserName,

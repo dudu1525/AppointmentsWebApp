@@ -1,5 +1,5 @@
 import axios from "axios"
-import { Appointment, AssistantSimple, UserProfileToken } from "../types/appointment";
+import { Appointment, AssistantSimple, UserProfileToken } from "../types/normalTypes";
 
 
 

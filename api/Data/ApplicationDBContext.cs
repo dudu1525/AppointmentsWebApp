@@ -29,6 +29,8 @@ namespace api.Data
         public DbSet<Assistant> Assistant { get; set; }
 
         public DbSet<Patient> Patient { get; set; }
+
+        public DbSet<Symptoms> Symptoms {get;set;}
     }
 
 

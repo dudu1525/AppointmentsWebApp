@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useAuth } from '../../Context/UserAuth';
-import { AppointmentFull, DoctorSimple } from '../../types/appointment';
+import { AppointmentFull, DoctorSimple } from '../../types/normalTypes';
 import { getDoctorByUserId } from '../../Services/DoctorService';
 import UserInfo from '../../Components/UserInfoComponent/UserInfo';
 import { getAppointmentsByDoctorId, updateAppointmentMessage, updateAppointmentStatus } from '../../Services/AppointmentService';

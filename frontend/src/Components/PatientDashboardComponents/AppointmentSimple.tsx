@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import AppointmentDetailed from './AppointmentDetailed';
 import { getDoctorAndClinic } from '../../Services/DoctorService';
-import { DoctorAndClinic } from '../../types/appointment';
-import { Appointment } from '../../types/appointment';
+import { DoctorAndClinic } from '../../types/normalTypes';
+import { Appointment } from '../../types/normalTypes';
 interface Props {
   appointment: Appointment;
 };

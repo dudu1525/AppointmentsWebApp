@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import UserInfo from '../Components/UserInfoComponent/UserInfo';
 import { useAuth } from '../Context/UserAuth';
-import { AppointmentFull, AssistantSimple, ClinicSimple } from '../types/appointment';
+import { AppointmentFull, AssistantSimple, ClinicSimple } from '../types/normalTypes';
 import { getAssistantByUserId } from '../Services/AssistantService';
 import PendingAppointmentsList from '../Components/AssistantDashboardComponents/PendingAppointmentsList';
 import ReviewAppointmentBox from '../Components/AssistantDashboardComponents/ReviewAppointmentBox';

@@ -105,7 +105,8 @@ namespace api.Controllers
         //need to be admin in order to create another admin
         [Authorize(Roles = "Admin")] 
         public async Task<IActionResult> CreateAdmin([FromBody] RegisterAdminDto adminDto)
-        {
+        {        if (!ModelState.IsValid)
+                return BadRequest(ModelState);
                 //transform to normal user
             var userModel = adminDto.ToUserFromAdminRegister();
 

@@ -12,6 +12,8 @@ namespace api.Models
         public int PatientId { get; set; }
         public int UserId { get; set; }
 
+        public String? MedicalRecord {get;set;}
+
         //refferences
         public List<Appointment> Appointments { get; set; } = new List<Appointment>();
         public User User { get; set; }

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'; // <-- Make sure to import useState
-import { ClinicDetailed } from '../../types/appointment';
+import { ClinicDetailed } from '../../types/normalTypes';
 import { createAppointment, getHoursPerDayAvailable } from '../../Services/AppointmentService';
 
 interface Props {

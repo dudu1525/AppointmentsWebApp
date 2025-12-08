@@ -1,5 +1,5 @@
 import React from 'react'
-import { AppointmentFull } from '../../types/appointment'
+import { AppointmentFull } from '../../types/normalTypes'
 import PendingAppointment from './PendingAppointment';
 
 interface Props  {

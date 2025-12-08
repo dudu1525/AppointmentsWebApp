@@ -8,6 +8,8 @@ public class PatientDetailsDto
     public int PatientId { get; set; }
     public string UserName { get; set; }
     public string Email { get; set; }
+
+    public string? MedicalRecord {get;set;}
      public List<Appointment> Appointments { get; set; } = new List<Appointment>();
 
 }

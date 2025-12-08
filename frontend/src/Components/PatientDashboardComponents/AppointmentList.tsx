@@ -1,6 +1,6 @@
 import React from 'react'
 import AppointmentSimple from './AppointmentSimple'
-import { Appointment } from '../../types/appointment';
+import { Appointment } from '../../types/normalTypes';
 
 type Props = {
 

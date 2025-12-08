@@ -1,5 +1,5 @@
 import axios from "axios"
-import { DoctorAndClinic, DoctorSimple, UserProfileToken } from "../types/appointment";
+import { DoctorAndClinic, DoctorSimple, UserProfileToken } from "../types/normalTypes";
 
 
 

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using api.Data;
 
@@ -11,9 +12,11 @@ using api.Data;
 namespace api.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20251208141111_AddedMedicalRecord")]
+    partial class AddedMedicalRecord
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -162,32 +165,11 @@ namespace api.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<bool?>("AbdominalPain")
-                        .HasColumnType("bit");
-
-                    b.Property<bool?>("Cough")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("CritialSymptoms")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("DateSubmitted")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool?>("Fever")
-                        .HasColumnType("bit");
-
-                    b.Property<bool?>("Headache")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("OtherSymptoms")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int?>("PatientId")
                         .HasColumnType("int");
-
-                    b.Property<bool?>("SoreThroat")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 

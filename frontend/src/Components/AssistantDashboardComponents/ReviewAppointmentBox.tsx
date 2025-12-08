@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { AppointmentFull } from '../../types/appointment';
+import { AppointmentFull } from '../../types/normalTypes';
 
 interface Props  {
 state: number | "";

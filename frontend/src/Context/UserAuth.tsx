@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import { User } from "../types/appointment";
+import { User } from "../types/normalTypes";
 import { useNavigate } from "react-router-dom";
 import { loginAPI, registerAPI } from "../Services/AuthService";
 import React from "react";

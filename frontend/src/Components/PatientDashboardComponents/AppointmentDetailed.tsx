@@ -1,5 +1,5 @@
 import React from 'react'
-import { Appointment } from '../../types/appointment';
+import { Appointment } from '../../types/normalTypes';
 
 type Props = {
     componentVisible: boolean;

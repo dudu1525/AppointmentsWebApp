@@ -1,5 +1,5 @@
 import axios from "axios"
-import { UserProfileToken } from "../types/appointment";
+import { UserProfileToken } from "../types/normalTypes";
 
 
 
@@ -50,16 +50,13 @@ export const createAdmin = async (email: string,
   password: string,
   name: string) => {
 
-    try {
+  
       const data = await axios.post(api+ "/auth/create-admin", {email: email,
       username: username,
       password: password,
       name: name, })
 
-    } catch (error)
-    {
-      console.log ("Error while creatign admin");
-    }
+    
 
 
 }
