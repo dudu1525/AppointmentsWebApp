@@ -62,6 +62,7 @@ export const UserProvider =  ({children}: Props) => {
           localStorage.setItem("user", JSON.stringify(userObj));
           setToken(res?.data.token!);
           setUser(userObj!);
+          axios.defaults.headers.common["Authorization"] = "Bearer " + res?.data.token;
           console.log("succesfully created user!"+ userObj.userId+"  "+userObj.role);
           navigate("/");
         }

@@ -40,6 +40,7 @@ export const registerAPI = async (
     });
     return data;
   } catch (error) {
+    
     console.log("Error creating account!");
   }
 };

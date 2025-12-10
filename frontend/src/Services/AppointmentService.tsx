@@ -6,9 +6,17 @@ import { Appointment, AppointmentFull, UserProfileToken } from "../types/normalT
 const api = "http://localhost:5159/api";
 
 
-export const createAppointment = async (doctorId: number, date: string, token:string) =>{
+export const createAppointment = async (doctorId: number, date: string) =>{
+     
+    const token = localStorage.getItem("token");
+    if (!token) {
+        console.error("No token found in localStorage!");
+        throw new Error("Authentication required");
+    }
 
-    try {
+    console.log("Token found:", token ? "YES" : "NO");
+    console.log("Token starts with:", token?.substring(0, 20));
+   try {
         const dataToSend = await axios.post<Appointment>(api + "/appointments",{
             doctorId: doctorId,
             appointmentDateTime: date,
@@ -20,7 +28,7 @@ export const createAppointment = async (doctorId: number, date: string, token:st
     return dataToSend.data; 
     }catch (error)
     {
-         
+         console.log("token of User:"+localStorage.getItem("token"));
         console.log("Something went wrong while creatign appointment!");
         console.log("Sending to server:", {
          doctorId,

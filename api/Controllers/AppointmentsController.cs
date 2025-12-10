@@ -1,3 +1,4 @@
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using api.Data;
 using api.Dtos.Appointments;
@@ -27,14 +28,21 @@ namespace api.Controllers
         [Authorize(Roles = "Patient")] //patients can create appointments
         public async Task<IActionResult> Create([FromBody] CreateAppointmentDto appointmentDto)
         {   
-                //get user id of the login
-            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (userIdClaim == null) return Unauthorized();
+                    Console.WriteLine("=== AUTHENTICATION DEBUG ===");
+    Console.WriteLine($"User.Identity.IsAuthenticated: {User.Identity?.IsAuthenticated}");
+    Console.WriteLine($"User.Identity.Name: {User.Identity?.Name}");
+    Console.WriteLine($"Claims count: {User.Claims.Count()}");
+            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sub || c.Type == ClaimTypes.NameIdentifier)?.Value;
+            if (userIdClaim == null){
+                   Console.WriteLine("UserClaim not found!");
+                 return Unauthorized();}
             var userId = int.Parse(userIdClaim); //parse from string to int
 
             //find patient based on user id
             var patient = await _patientRepo.GetByUserIdAsync(userId);
-            if (patient == null) return Forbid("User is not a valid patient.");
+            if (patient == null) {
+                Console.WriteLine($"Patient not found for userId: {userId}");
+                return Forbid("User is not a valid patient.");}
 
             //create appointmentModel based on the given info in the front end and the gotten patient id
             var appointmentModel = await _appointmentRepo.CreateAsync(appointmentDto, patient.PatientId);

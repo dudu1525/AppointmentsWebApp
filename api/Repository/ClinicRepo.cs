@@ -93,6 +93,12 @@ namespace api.Repository
         }
 
 
+        //function to assign doctor or assistnat?
+        //in input I have the clinic id and the doctor id <this is done elsewhere
+
+        //in input i have the clinic id and assistant id <done elsewhere
+
+
 
     }
 

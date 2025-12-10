@@ -99,10 +99,20 @@ namespace api.Repository
                 return null; 
             }
 
+             var supposedClinic = await _dbcontext.Clinic.FirstOrDefaultAsync(c => c.Id == doctorDto.ClinicId);
+            if (supposedClinic==null)
+            {
+                return null;
+            }
 
-            existingDoctor.User.UserName = doctorDto.DoctorName;
+
+            existingDoctor.User.UserName = doctorDto.UserName;
+            existingDoctor.User.Name=doctorDto.Name;
+            existingDoctor.User.Email=doctorDto.Email;
+            existingDoctor.ClinicId = doctorDto.ClinicId;
             existingDoctor.Type = doctorDto.Type;
 
+           
             await _dbcontext.SaveChangesAsync();
 
             return existingDoctor;

@@ -90,11 +90,21 @@ namespace api.Repository
                 return null; 
             }
 
+            var supposedClinic = await _dbcontext.Clinic.FirstOrDefaultAsync(c => c.Id == assistantDto.ClinicId);
+            if (supposedClinic==null)
+            {
+                return null;
+            }
 
-            existingAssistant.User.UserName = assistantDto.AssistantName;
-            existingAssistant.User.Email = assistantDto.AssistantEmail;
+
+            existingAssistant.User.UserName = assistantDto.UserName;
+            existingAssistant.User.Name = assistantDto.Name;
+            existingAssistant.User.Email = assistantDto.Email;
+            
                 //need to check if id exists in clinics
             existingAssistant.ClinicId = assistantDto.ClinicId;
+
+            
       
 
             await _dbcontext.SaveChangesAsync();
