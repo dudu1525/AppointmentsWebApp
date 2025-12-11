@@ -1,9 +1,10 @@
 import React, { useRef, useState } from 'react'
 import { createAdmin } from '../Services/AuthService';
 import { createPatient, deletePatientById, getAllPatients, updatePatientById } from '../Services/PatientService';
-import { DoctorDetailsDto, PatientDetailsDto } from '../types/gettingListsTypes';
-import { updateDoctorDto, updatePatientDto } from '../types/updateTypes';
+import { AssistantDetailsDto, DoctorDetailsDto, PatientDetailsDto } from '../types/gettingListsTypes';
+import { updateAssistantDto, updateDoctorDto, updatePatientDto } from '../types/updateTypes';
 import { createDoctor, deleteDoctorById, getAllDoctors, updateDoctorById } from '../Services/DoctorService';
+import { createAssistant, deleteAssistantById, getAllAssistant, updateAssistantById } from '../Services/AssistantService';
 
 interface Props  {
 currentState: number;
@@ -238,6 +239,104 @@ if (result.success) {
   }
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////assistant CRUD
+const assistantClinicIdRef = useRef<HTMLInputElement>(null);
+const assistantusernameRef = useRef<HTMLInputElement>(null);
+const assistantnameRef     = useRef<HTMLInputElement>(null);
+const assistantpasswordRef = useRef<HTMLInputElement>(null);
+const assistantemailRef    = useRef<HTMLInputElement>(null);
+
+
+const handleCreateAssistant= async (e: React.FormEvent) =>{
+   e.preventDefault();
+const result = await createAssistant(Number(assistantClinicIdRef.current?.value) ?? 0,assistantusernameRef.current?.value ?? "",assistantnameRef.current?.value ?? "",
+            assistantpasswordRef.current?.value ?? "",assistantemailRef.current?.value ?? "" );
+
+ if (result.success) {
+      if (assistantClinicIdRef.current) assistantClinicIdRef.current.value = "";
+    if (assistantusernameRef.current) assistantusernameRef.current.value = "";
+    if (assistantnameRef.current) assistantnameRef.current.value = "";
+    if (assistantpasswordRef.current) assistantpasswordRef.current.value = "";
+    if (assistantemailRef.current) assistantemailRef.current.value = "";
+
+   setOperationFeedback("createAssistant", "Assistant created successfully");
+  } else {
+   setOperationFeedback("createAssistant", "Failed to create assistant: " + result.message, true);
+
+  }
+
+};
+
+//get assistants
+const [assistants, setAssistants] = useState<AssistantDetailsDto[]>([]);
+const handleGetAllAssistants = async () => {
+  const result = await getAllAssistant(); 
+
+  if (result.success) {
+    setAssistants(result.data as AssistantDetailsDto[]);
+   setOperationFeedback("getAssistants", "Assistants loaded successfully");
+  } else {
+    setDoctors([]);
+     setOperationFeedback("getAssistants", "Failed to load assistants: " + result.message, true);
+
+  }
+ 
+};
+//update assistant by id
+const updateAssistantIdRef = useRef<HTMLInputElement>(null);
+const updateAssistantUsernameRef     = useRef<HTMLInputElement>(null);
+const updateAssistantNameRef = useRef<HTMLInputElement>(null);
+const updateAssistantEmailRef    = useRef<HTMLInputElement>(null);
+const updateAssistantClinicIdRef    = useRef<HTMLInputElement>(null);
+
+const handleUpdateAssistant = async (e: React.FormEvent) => {
+  e.preventDefault();
+
+  const assistantId = Number(updateAssistantIdRef.current?.value);
+  if (!assistantId) {
+    setOperationFeedback("updateAssistant", "Failed to update assistant " , true);
+    return;
+  }
+
+  const dto: updateAssistantDto = {
+    userName: updateAssistantUsernameRef.current?.value ?? "",
+    name: updateAssistantNameRef.current?.value ?? "",
+    email: updateAssistantEmailRef.current?.value ?? "",
+    clinicId: Number(updateAssistantClinicIdRef.current?.value) ?? 0,
+
+  };
+
+  const result = await updateAssistantById(assistantId, dto);
+
+  if (result.success) {
+    setOperationFeedback("updateAssistant", "Assistant updated successfully");
+  } else {
+    setOperationFeedback("updateAssistant", "Failed to update assistant  " + result.message, true);
+  }
+};
+
+//delete assistant by id
+const deleteAssistantIdref = useRef<HTMLInputElement>(null);
+
+const handleDeleteAssistant = async (e:React.FormEvent) =>{
+e.preventDefault();
+
+ const assistantId = Number(deleteAssistantIdref.current?.value);
+if (!assistantId) {
+    setOperationFeedback("deleteAssistant", "Failed to delete assistant because of Id non existant" , true);
+    return;
+  }
+const result = await deleteAssistantById(assistantId);
+
+if (result.success) {
+    setOperationFeedback("deleteAssistant", "Assistant deleted successfully");
+  } else {
+    setOperationFeedback("deleteAssistant", "Failed to delete assistant  " + result.message, true);
+  }
+}
+
+
+
+
 
 
 ////////////////////////////////////////////////////////////////////////////////Visible component
@@ -696,8 +795,184 @@ if (result.success) {
                          <div className="space-y-10">
 
 
-                        
+                         {/* Create Assistant */}
+    <h3 className="text-lg font-semibold">Create Assistant Account</h3>
 
+    <div id="createAssistant">
+      <div className="w-full border border-gray-300 bg-gray-100 px-4 py-4 rounded-lg shadow-sm">
+
+        <form onSubmit={handleCreateAssistant} className="space-y-4">
+
+        <input ref={assistantClinicIdRef} placeholder="Clinic ID (existing!) " type="number" className="w-full border p-2 rounded" />  
+          <div className="flex flex-col">
+            <label className="text-sm font-medium text-gray-800">Username:</label>
+            <input
+              id="inputUsername"
+              ref={assistantusernameRef}
+              placeholder="Create Username"
+              className="border border-gray-300 rounded p-2 text-sm focus:ring focus:ring-indigo-200"
+            />
+          </div>
+
+          <div className="flex flex-col">
+            <label className="text-sm font-medium text-gray-800">Name:</label>
+            <input
+              id="inputName"
+              ref={assistantnameRef}
+              placeholder="Create Name"
+              className="border border-gray-300 rounded p-2 text-sm focus:ring focus:ring-indigo-200"
+            />
+          </div>
+
+          <div className="flex flex-col">
+            <label className="text-sm font-medium text-gray-800">Password:</label>
+            <input
+              type="password"
+              id="inputPassword"
+              ref={assistantpasswordRef}
+              placeholder="Create Password"
+              className="border border-gray-300 rounded p-2 text-sm focus:ring focus:ring-indigo-200"
+            />
+          </div>
+
+          <div className="flex flex-col">
+            <label className="text-sm font-medium text-gray-800">Email:</label>
+            <input
+              id="inputMail"
+              ref={assistantemailRef}
+              placeholder="Create Email"
+              className="border border-gray-300 rounded p-2 text-sm focus:ring focus:ring-indigo-200"
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="w-full bg-indigo-600 text-white py-2 rounded font-medium text-sm hover:bg-indigo-700 transition"
+          >
+            Create Assistant
+          </button>
+        </form>
+
+        {feedback.createAssistant && (
+          <div
+            className={`mt-4 p-2 rounded text-sm ${
+              feedback.createAssistant.isError
+                ? "bg-red-200 text-red-900"
+                : "bg-green-200 text-green-900"
+            }`}
+          >
+            {feedback.createAssistant.message}
+          </div>
+        )}
+      </div>
+    </div>
+
+    {/* Get All Assistants */}
+    <h3 className="text-lg font-semibold">Get all Assistants</h3>
+
+    <div id="getAssistants">
+      <div className="w-full border border-gray-300 bg-gray-100 px-4 py-4 rounded-lg shadow-sm">
+
+        <button
+          onClick={handleGetAllAssistants}
+          className="bg-blue-600 text-white px-4 py-2 rounded text-sm hover:bg-blue-700 transition"
+        >
+          Load All Assistants
+        </button>
+
+        <div className="mt-4 text-sm">
+          {assistants.length === 0 ? (
+            <div>No Assistants loaded.</div>
+          ) : (
+            <ul className="space-y-1">
+              {assistants.map((p) => (
+                <li key={p.assistantId} className="bg-white border p-2 rounded">
+                  Id: {p.assistantId} –  {p.assistantUserName} : {p.assistantName} ({p.assistantEmail}) Clinic id: {p.clinicId}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+
+        {feedback.getAssistants && (
+          <div
+            className={`mt-4 p-2 rounded text-sm ${
+              feedback.getAssistants.isError
+                ? "bg-red-200 text-red-900"
+                : "bg-green-200 text-green-900"
+            }`}
+          >
+            {feedback.getAssistants.message}
+          </div>
+        )}
+      </div>
+    </div>
+
+             {/*Update Assistant*/}
+           <h3 className="text-lg font-semibold">Modify an Assistant with ID</h3>
+
+    <div id="modifyAssistant">
+      <div className="w-full border border-gray-300 bg-gray-100 px-4 py-4 rounded-lg shadow-sm">
+
+        <form onSubmit={handleUpdateAssistant} className="space-y-3 text-sm">
+          <input ref={updateAssistantIdRef} placeholder="Assistant ID" type="number" className="w-full border p-2 rounded" />
+          <input ref={updateAssistantUsernameRef} placeholder="Username" className="w-full border p-2 rounded" />
+          <input ref={updateAssistantNameRef} placeholder="Name" className="w-full border p-2 rounded" />
+          <input ref={updateAssistantEmailRef} placeholder="Email" className="w-full border p-2 rounded" />
+          <input ref={updateAssistantClinicIdRef} placeholder="New Clinic Id (existing!)" className="w-full border p-2 rounded" />
+
+          <button
+            type="submit"
+            className="w-full bg-yellow-500 text-white py-2 rounded font-medium hover:bg-yellow-600 transition"
+          >
+            Update Assistant
+          </button>
+        </form>
+
+        {feedback.updateAssistant && (
+          <div
+            className={`mt-4 p-2 rounded text-sm ${
+              feedback.updateAssistant.isError
+                ? "bg-red-200 text-red-900"
+                : "bg-green-200 text-green-900"
+            }`}
+          >
+            {feedback.updateAssistant.message}
+          </div>
+        )}
+      </div>
+    </div>
+
+        {/* Delete Assistant */}
+    <h3 className="text-lg font-semibold">Delete an Assistant by ID</h3>
+
+    <div id="deleteAssistant">
+      <div className="w-full border border-gray-300 bg-gray-100 px-4 py-4 rounded-lg shadow-sm">
+
+        <form onSubmit={handleDeleteAssistant} className="space-y-3 text-sm">
+          <input ref={deleteAssistantIdref} placeholder="Assistant ID" type="number" className="w-full border p-2 rounded" />
+
+          <button
+            type="submit"
+            className="w-full bg-red-600 text-white py-2 rounded font-medium hover:bg-red-700 transition"
+          >
+            Delete Assistant
+          </button>
+        </form>
+
+        {feedback.deleteAssistant && (
+          <div
+            className={`mt-4 p-2 rounded text-sm ${
+              feedback.deleteAssistant.isError
+                ? "bg-red-200 text-red-900"
+                : "bg-green-200 text-green-900"
+            }`}
+          >
+            {feedback.deleteAssistant.message}
+          </div>
+        )}
+      </div>
+    </div>
 
 
 
