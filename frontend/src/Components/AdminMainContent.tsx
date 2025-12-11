@@ -1,8 +1,9 @@
 import React, { useRef, useState } from 'react'
 import { createAdmin } from '../Services/AuthService';
 import { createPatient, deletePatientById, getAllPatients, updatePatientById } from '../Services/PatientService';
-import { PatientDetailsDto } from '../types/gettingListsTypes';
-import { updatePatientDto } from '../types/updateTypes';
+import { DoctorDetailsDto, PatientDetailsDto } from '../types/gettingListsTypes';
+import { updateDoctorDto, updatePatientDto } from '../types/updateTypes';
+import { createDoctor, deleteDoctorById, getAllDoctors, updateDoctorById } from '../Services/DoctorService';
 
 interface Props  {
 currentState: number;
@@ -139,12 +140,104 @@ if (result.success) {
   }
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////Manage Doctors
+//create doctors
+const doctorClinicIdRef = useRef<HTMLInputElement>(null);
+const doctorusernameRef = useRef<HTMLInputElement>(null);
+const doctornameRef     = useRef<HTMLInputElement>(null);
+const doctorpasswordRef = useRef<HTMLInputElement>(null);
+const doctoremailRef    = useRef<HTMLInputElement>(null);
+const doctorTypeRef    = useRef<HTMLInputElement>(null);
 
+const handleCreateDoctor = async (e: React.FormEvent) =>{
+   e.preventDefault();
+const result = await createDoctor(Number(doctorClinicIdRef.current?.value) ?? 0,doctorusernameRef.current?.value ?? "",doctornameRef.current?.value ?? "",
+            doctoremailRef.current?.value ?? "",doctorpasswordRef.current?.value ?? "",doctorTypeRef.current?.value ?? "" );
 
+ if (result.success) {
+      if (doctorClinicIdRef.current) doctorClinicIdRef.current.value = "";
+    if (doctorusernameRef.current) doctorusernameRef.current.value = "";
+    if (doctornameRef.current) doctornameRef.current.value = "";
+    if (doctorpasswordRef.current) doctorpasswordRef.current.value = "";
+    if (doctoremailRef.current) doctoremailRef.current.value = "";
+    if (doctorTypeRef.current) doctorTypeRef.current.value = "";
+   setOperationFeedback("createDoctor", "Doctor created successfully");
+  } else {
+   setOperationFeedback("createDoctor", "Failed to create doctor: " + result.message, true);
 
+  }
 
+};
 
+//get doctors
+const [doctors, setDoctors] = useState<DoctorDetailsDto[]>([]);
+const handleGetAllDoctors = async () => {
+  const result = await getAllDoctors(); 
 
+  if (result.success) {
+    setDoctors(result.data as DoctorDetailsDto[]);
+   setOperationFeedback("getDoctors", "Doctors loaded successfully");
+  } else {
+    setDoctors([]);
+     setOperationFeedback("getDoctors", "Failed to load doctors: " + result.message, true);
+
+  }
+ 
+};
+//modify doctor by id
+const updateDoctorIdRef = useRef<HTMLInputElement>(null);
+const updatedoctorUsernameRef     = useRef<HTMLInputElement>(null);
+const updatedoctorNameRef = useRef<HTMLInputElement>(null);
+const updatedoctorEmailRef    = useRef<HTMLInputElement>(null);
+const updatedoctorTypeRef    = useRef<HTMLInputElement>(null);
+const updatedoctorClinicIdRef    = useRef<HTMLInputElement>(null);
+
+const handleUpdateDoctor = async (e: React.FormEvent) => {
+  e.preventDefault();
+
+  const doctorId = Number(updateDoctorIdRef.current?.value);
+  if (!doctorId) {
+    setOperationFeedback("updateDoctor", "Failed to update doctor " , true);
+    return;
+  }
+
+  const dto: updateDoctorDto = {
+    userName: updatedoctorUsernameRef.current?.value ?? "",
+    name: updatedoctorNameRef.current?.value ?? "",
+    email: updatedoctorEmailRef.current?.value ?? "",
+    type: updatedoctorTypeRef.current?.value ?? ""   ,
+    clinicId: Number(updatedoctorClinicIdRef.current?.value) ?? 0,
+
+  };
+
+  const result = await updateDoctorById(doctorId, dto);
+
+  if (result.success) {
+    setOperationFeedback("updateDoctor", "Doctor updated successfully");
+  } else {
+    setOperationFeedback("updateDoctor", "Failed to update doctor  " + result.message, true);
+  }
+};
+
+//delete doctor by id
+const deleteDoctorIdref = useRef<HTMLInputElement>(null);
+
+const handleDeleteDoctor = async (e:React.FormEvent) =>{
+e.preventDefault();
+
+ const doctorId = Number(deleteDoctorIdref.current?.value);
+if (!doctorId) {
+    setOperationFeedback("deleteDoctor", "Failed to delete doctor because of Id non existant" , true);
+    return;
+  }
+const result = await deleteDoctorById(doctorId);
+
+if (result.success) {
+    setOperationFeedback("deleteDoctor", "Doctor deleted successfully");
+  } else {
+    setOperationFeedback("deleteDoctor", "Failed to delete doctor  " + result.message, true);
+  }
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////assistant CRUD
 
 
 ////////////////////////////////////////////////////////////////////////////////Visible component
@@ -392,28 +485,225 @@ if (result.success) {
         )}
       </div>
     </div>
+
+
+
   </div>
 );
 
 
                      case 2:
                     return (//manage doctors
-                            <div>manage doctors
+                            <div className="space-y-10">
 
+                           {/* Create Doctor */}
+    <h3 className="text-lg font-semibold">Create Doctor Account</h3>
 
+    <div id="createDoctor">
+      <div className="w-full border border-gray-300 bg-gray-100 px-4 py-4 rounded-lg shadow-sm">
 
+        <form onSubmit={handleCreateDoctor} className="space-y-4">
 
+          <input ref={doctorClinicIdRef} placeholder="Clinic ID (existing!) " type="number" className="w-full border p-2 rounded" />                
 
+          <div className="flex flex-col">
+            <label className="text-sm font-medium text-gray-800">Username:</label>
+            <input
+              id="inputUsername"
+              ref={doctorusernameRef}
+              placeholder="Create Username"
+              className="border border-gray-300 rounded p-2 text-sm focus:ring focus:ring-indigo-200"
+            />
+          </div>
 
+          <div className="flex flex-col">
+            <label className="text-sm font-medium text-gray-800">Name:</label>
+            <input
+              id="inputName"
+              ref={doctornameRef}
+              placeholder="Create Name"
+              className="border border-gray-300 rounded p-2 text-sm focus:ring focus:ring-indigo-200"
+            />
+          </div>
 
-                              
+          <div className="flex flex-col">
+            <label className="text-sm font-medium text-gray-800">Password:</label>
+            <input
+              type="password"
+              id="inputPassword"
+              ref={doctorpasswordRef}
+              placeholder="Create Password"
+              className="border border-gray-300 rounded p-2 text-sm focus:ring focus:ring-indigo-200"
+            />
+          </div>
+
+          <div className="flex flex-col">
+            <label className="text-sm font-medium text-gray-800">Email:</label>
+            <input
+              id="inputMail"
+              ref={doctoremailRef}
+              placeholder="Create Email"
+              className="border border-gray-300 rounded p-2 text-sm focus:ring focus:ring-indigo-200"
+            />
+          </div>
+
+          <div className="flex flex-col">
+            <label className="text-sm font-medium text-gray-800">Type of Doctor:</label>
+            <input
+              id="inputTypeOfDoctor"
+              ref={doctorTypeRef}
+              placeholder="Input type of doctor"
+              className="border border-gray-300 rounded p-2 text-sm focus:ring focus:ring-indigo-200"
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="w-full bg-indigo-600 text-white py-2 rounded font-medium text-sm hover:bg-indigo-700 transition"
+          >
+            Create Doctor
+          </button>
+        </form>
+
+        {feedback.createDoctor && (
+          <div
+            className={`mt-4 p-2 rounded text-sm ${
+              feedback.createDoctor.isError
+                ? "bg-red-200 text-red-900"
+                : "bg-green-200 text-green-900"
+            }`}
+          >
+            {feedback.createDoctor.message}
+          </div>
+        )}
+      </div>
+      </div>
+
+               {/* Get all Doctors */}
+               <h3 className="text-lg font-semibold">Get all Doctors</h3>
+
+    <div id="getDoctors">
+      <div className="w-full border border-gray-300 bg-gray-100 px-4 py-4 rounded-lg shadow-sm">
+
+        <button
+          onClick={handleGetAllDoctors}
+          className="bg-blue-600 text-white px-4 py-2 rounded text-sm hover:bg-blue-700 transition"
+        >
+          Load All Doctors
+        </button>
+
+        <div className="mt-4 text-sm">
+          {doctors.length === 0 ? (
+            <div>No doctors loaded.</div>
+          ) : (
+            <ul className="space-y-1">
+              {doctors.map((p) => (
+                <li key={p.doctorId} className="bg-white border p-2 rounded">
+                  doctor Id: {p.doctorId} - {p.doctorUserName} : {p.doctorName} ({p.type}) {p.email} clinic Id: {p.clinicId}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+
+        {feedback.getDoctors && (
+          <div
+            className={`mt-4 p-2 rounded text-sm ${
+              feedback.getDoctors.isError
+                ? "bg-red-200 text-red-900"
+                : "bg-green-200 text-green-900"
+            }`}
+          >
+            {feedback.getDoctors.message}
+          </div>
+        )}
+      </div>
+    </div>
+
+        {/*Update Doctor*/}
+           <h3 className="text-lg font-semibold">Modify a Doctor with ID</h3>
+
+    <div id="modifyDoctor">
+      <div className="w-full border border-gray-300 bg-gray-100 px-4 py-4 rounded-lg shadow-sm">
+
+        <form onSubmit={handleUpdateDoctor} className="space-y-3 text-sm">
+          <input ref={updateDoctorIdRef} placeholder="Doctor ID" type="number" className="w-full border p-2 rounded" />
+          <input ref={updatedoctorUsernameRef} placeholder="Username" className="w-full border p-2 rounded" />
+          <input ref={updatedoctorNameRef} placeholder="Name" className="w-full border p-2 rounded" />
+          <input ref={updatedoctorEmailRef} placeholder="Email" className="w-full border p-2 rounded" />
+          <input ref={updatedoctorTypeRef} placeholder="Type of doctor" className="w-full border p-2 rounded" />
+          <input ref={updatedoctorClinicIdRef} placeholder="New Clinic Id (existing!)" className="w-full border p-2 rounded" />
+
+          <button
+            type="submit"
+            className="w-full bg-yellow-500 text-white py-2 rounded font-medium hover:bg-yellow-600 transition"
+          >
+            Update Doctor
+          </button>
+        </form>
+
+        {feedback.updateDoctor && (
+          <div
+            className={`mt-4 p-2 rounded text-sm ${
+              feedback.updateDoctor.isError
+                ? "bg-red-200 text-red-900"
+                : "bg-green-200 text-green-900"
+            }`}
+          >
+            {feedback.updateDoctor.message}
+          </div>
+        )}
+      </div>
+    </div>
+
+        {/* Delete Doctor */}
+    <h3 className="text-lg font-semibold">Delete a Doctor by ID</h3>
+
+    <div id="deleteDoctor">
+      <div className="w-full border border-gray-300 bg-gray-100 px-4 py-4 rounded-lg shadow-sm">
+
+        <form onSubmit={handleDeleteDoctor} className="space-y-3 text-sm">
+          <input ref={deleteDoctorIdref} placeholder="Doctor ID" type="number" className="w-full border p-2 rounded" />
+
+          <button
+            type="submit"
+            className="w-full bg-red-600 text-white py-2 rounded font-medium hover:bg-red-700 transition"
+          >
+            Delete Doctor
+          </button>
+        </form>
+
+        {feedback.deleteDoctor && (
+          <div
+            className={`mt-4 p-2 rounded text-sm ${
+              feedback.deleteDoctor.isError
+                ? "bg-red-200 text-red-900"
+                : "bg-green-200 text-green-900"
+            }`}
+          >
+            {feedback.deleteDoctor.message}
+          </div>
+        )}
+      </div>
+    </div>
+
+   
                             </div>
-
                     );
-                
+                //Manage Assistants
                 case 3:
                     return (
-                         <div>manage assistants</div>
+                         <div className="space-y-10">
+
+
+                        
+
+
+
+
+
+
+                         </div>
                     );
 
                      case 4:

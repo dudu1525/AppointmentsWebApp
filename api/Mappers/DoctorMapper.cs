@@ -21,9 +21,9 @@ namespace api.Mappers
                 Type = doctorModel.Type,
                 ClinicId = doctorModel.ClinicId,
 
-                Appointments = doctorModel.Appointments
-                .Select(a => a.ToAppointmentSummaryDto())
-                .ToList()
+                //Appointments = doctorModel.Appointments
+               // .Select(a => a.ToAppointmentSummaryDto())
+               // .ToList()
             };
         }
        

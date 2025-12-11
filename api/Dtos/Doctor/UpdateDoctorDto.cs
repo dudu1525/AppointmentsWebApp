@@ -15,11 +15,11 @@ public class UpdateDoctorDto
     [MinLength(5, ErrorMessage = "name must be at least 5 characters long!")]
     [MaxLength(20, ErrorMessage = "Name must be at most 20 characters long!")]
     public string Email { get; set; }
-
+    [Required]
     public string Type { get; set; }
 
-    
-    public int ClinicId;
+    [Required]
+    public int ClinicId {get;set;}
 
     
     

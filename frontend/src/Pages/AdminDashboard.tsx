@@ -40,7 +40,7 @@ const getLabel = (i: number): string => {
       <div className="flex gap-3">
   {[0, 1, 2, 3, 4, 5].map((i) => (
     <button key={i} onClick={() => setCurrentPage(i)} className={"px-3 py-2 rounded-md border-2 " +
-        (currentPage === i ? "bg-blue-600 border-blue-600 text-white": "bg-white border-gray-400 text-gray-700 hover:bg-gray-200")}>
+        (currentPage === i ? "bg-darkBlue text-white": "bg-white border-gray-400 text-gray-700 hover:bg-gray-200")}>
             {getLabel(i)}
     </button>
   ))}

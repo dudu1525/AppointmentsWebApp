@@ -13,7 +13,7 @@ namespace api.Dtos.Doctor
         public int? ClinicId { get; set; }
 
 
-        public List<AppointmentSummaryDto> Appointments { get; set; }
+      //  public List<AppointmentSummaryDto> Appointments { get; set; }
 
         
     }
