@@ -44,9 +44,9 @@ namespace api.Controllers
         {
 
             var clinics = await clinicrepo.GetAllAsync();
-          //  var clinicsdto = clinics.Select(c => c.ToDoctorDetailsDto());
+            var clinicsdto = clinics.Select(c => c.ToClinicSimpleDto());
 
-            return Ok(clinics);
+            return Ok(clinicsdto);
         }
 
         [HttpPut("{id:int}")]

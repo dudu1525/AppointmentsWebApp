@@ -25,3 +25,9 @@ clinicId?: number;
 
 
 }
+
+export type updateClinicDto = {
+name:string;
+location: string;
+
+}

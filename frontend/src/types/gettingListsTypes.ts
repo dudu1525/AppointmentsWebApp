@@ -29,3 +29,17 @@ clinicId?: number;
 
 }
 
+export type UserTypeDto = {
+userId:number;
+userName: string;
+email: string;
+role: string;
+
+}
+
+export type ClinicDtoList = {
+id: number;
+name: string;
+location: string;
+
+}

@@ -8,7 +8,7 @@ namespace api.Mappers
         public static Userdto ToUserDto(this User userModel)
         {
             return new Userdto
-            {   
+            {   UserId = userModel.Id,
                 UserName = userModel.UserName,
                 Email = userModel.Email,
                 Role = userModel.Role

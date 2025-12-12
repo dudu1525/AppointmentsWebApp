@@ -1,5 +1,6 @@
 import axios from "axios"
 import { UserProfileToken } from "../types/normalTypes";
+import { apiRequest } from "./GeneralServiceCall";
 
 
 
@@ -59,5 +60,11 @@ export const createAdmin = async (email: string,
 
     
 
+
+}
+
+export const getAllUsers = () =>{
+
+return apiRequest(axios.get(api+"/auth/get-all-users"));
 
 }

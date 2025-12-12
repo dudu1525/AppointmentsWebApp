@@ -1,10 +1,12 @@
 import React, { useRef, useState } from 'react'
-import { createAdmin } from '../Services/AuthService';
+import { createAdmin, getAllUsers } from '../Services/AuthService';
 import { createPatient, deletePatientById, getAllPatients, updatePatientById } from '../Services/PatientService';
-import { AssistantDetailsDto, DoctorDetailsDto, PatientDetailsDto } from '../types/gettingListsTypes';
-import { updateAssistantDto, updateDoctorDto, updatePatientDto } from '../types/updateTypes';
+import { AssistantDetailsDto, ClinicDtoList, DoctorDetailsDto, PatientDetailsDto, UserTypeDto } from '../types/gettingListsTypes';
+import { updateAssistantDto, updateClinicDto, updateDoctorDto, updatePatientDto } from '../types/updateTypes';
 import { createDoctor, deleteDoctorById, getAllDoctors, updateDoctorById } from '../Services/DoctorService';
 import { createAssistant, deleteAssistantById, getAllAssistant, updateAssistantById } from '../Services/AssistantService';
+import { createClinic, deleteClinicById, getAllClinics, updateClinicById } from '../Services/ClinicService';
+import { ClinicDetailed } from '../types/normalTypes';
 
 interface Props  {
 currentState: number;
@@ -52,6 +54,22 @@ const emailRef    = useRef<HTMLInputElement>(null);
             }
         }
       };
+//get all users:
+
+const [users, setUsers] = useState<UserTypeDto[]>([]);
+const handleGetAllUsers= async () => {
+  const result = await getAllUsers(); 
+
+  if (result.success) {
+    setUsers(result.data as UserTypeDto[]);
+   setOperationFeedback("getUsers", "Users loaded successfully");
+  } else {
+    setUsers([]);
+     setOperationFeedback("getUsers", "Failed to load users: " + result.message, true);
+
+  }
+ 
+};
   ////////////////////////////////////////////////////////////////////////////////////////Manage Patients
 //const [feedback, setFeedback] = useState<string>("");
 const patientusernameRef = useRef<HTMLInputElement>(null);
@@ -275,7 +293,7 @@ const handleGetAllAssistants = async () => {
     setAssistants(result.data as AssistantDetailsDto[]);
    setOperationFeedback("getAssistants", "Assistants loaded successfully");
   } else {
-    setDoctors([]);
+    setAssistants([]);
      setOperationFeedback("getAssistants", "Failed to load assistants: " + result.message, true);
 
   }
@@ -333,7 +351,88 @@ if (result.success) {
     setOperationFeedback("deleteAssistant", "Failed to delete assistant  " + result.message, true);
   }
 }
+////////////////////////////////////////////////////////////////////////////////////////////////Manage Clinics
+const clinicNameRef = useRef<HTMLInputElement>(null);
+const clinicLocationRef     = useRef<HTMLInputElement>(null);
 
+const handleCreateClinic= async (e: React.FormEvent) =>{
+   e.preventDefault();
+const result = await createClinic(clinicNameRef.current?.value ?? "",clinicLocationRef.current?.value ?? "");
+
+ if (result.success) {
+      if (clinicNameRef.current) clinicNameRef.current.value = "";
+    if (clinicLocationRef.current) clinicLocationRef.current.value = "";
+
+
+   setOperationFeedback("createClinic", "Clinic created successfully");
+  } else {
+   setOperationFeedback("createClinic", "Failed to create clinic: " + result.message, true);
+
+  }
+
+};
+
+//get clinics
+const [clinics, setClinics] = useState<ClinicDtoList[]>([]);
+const handleGetAllClinics = async () => {
+  const result = await getAllClinics(); 
+
+  if (result.success) {
+    setClinics(result.data as ClinicDtoList[]);
+   setOperationFeedback("getClinics", "Clinics loaded successfully");
+  } else {
+    setClinics([]);
+     setOperationFeedback("getClinics", "Failed to load clinics: " + result.message, true);
+
+  }
+};
+//update clinics
+const updateClinicIdRef = useRef<HTMLInputElement>(null);
+const updateClinicNameRef     = useRef<HTMLInputElement>(null);
+const updateClinicLocationRef = useRef<HTMLInputElement>(null);
+
+const handleUpdateClinic = async (e: React.FormEvent) => {
+  e.preventDefault();
+
+  const clinicId = Number(updateClinicIdRef.current?.value);
+  if (!clinicId) {
+    setOperationFeedback("updateClinic", "Failed to update Clinic " , true);
+    return;
+  }
+
+  const dto: updateClinicDto = {
+    name: updateClinicNameRef.current?.value ?? "",
+    location: updateClinicLocationRef.current?.value ?? "",
+  };
+
+  const result = await updateClinicById(clinicId, dto);
+
+  if (result.success) {
+    setOperationFeedback("updateClinic", "Clinic updated successfully");
+  } else {
+    setOperationFeedback("updateClinic", "Failed to update Clinic  " + result.message, true);
+  }
+};
+//delete clinic by id
+const deleteClinicIdref = useRef<HTMLInputElement>(null);
+
+const handleDeleteClinic = async (e:React.FormEvent) =>{
+e.preventDefault();
+
+ const clinicId = Number(deleteClinicIdref.current?.value);
+if (!clinicId) {
+    setOperationFeedback("deleteClinic", "Failed to delete clinic because of Id non existant" , true);
+    return;
+  }
+const result = await deleteClinicById(clinicId);
+
+if (result.success) {
+    setOperationFeedback("deleteClinic", "clinic deleted successfully");
+  } else {
+    setOperationFeedback("deleteClinic", "Failed to delete clinic  " + result.message, true);
+  }
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////Manage Appointments
 
 
 
@@ -384,20 +483,46 @@ if (result.success) {
                                     
                                 </div>
                                           <br/>    
-                           <h3>Get all Users</h3>
-                           <div className="w-full border-2 border-black bg-gray-200 px-3 py-3 rounded-xl">
+                           {/* Get All Users */}
+    <h3 className="text-lg font-semibold">Get all Users</h3>
 
+    <div id="getUsers">
+      <div className="w-full border border-gray-300 bg-gray-100 px-4 py-4 rounded-lg shadow-sm">
 
-                           </div>
+        <button
+          onClick={handleGetAllUsers}
+          className="bg-blue-600 text-white px-4 py-2 rounded text-sm hover:bg-blue-700 transition"
+        >
+          Load All Users
+        </button>
 
+        <div className="mt-4 text-sm">
+          {users.length === 0 ? (
+            <div>No users loaded.</div>
+          ) : (
+            <ul className="space-y-1">
+              {users.map((p) => (
+                <li key={p.userId} className="bg-white border p-2 rounded">
+                  user id: {p.userId} – username: {p.userName} ({p.email}) - role: {p.role}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
 
-                               <br/>    
-                           <h3>Delete a User by Id</h3>
-                           <div className="w-full border-2 border-black bg-gray-200 px-3 py-3 rounded-xl">
-
-
-                           </div>
-
+        {feedback.getUsers && (
+          <div
+            className={`mt-4 p-2 rounded text-sm ${
+              feedback.getUsers.isError
+                ? "bg-red-200 text-red-900"
+                : "bg-green-200 text-green-900"
+            }`}
+          >
+            {feedback.getUsers.message}
+          </div>
+        )}
+      </div>
+    </div>
 
                             </div>
 
@@ -983,13 +1108,172 @@ if (result.success) {
 
                      case 4:
                     return (
-                            <div>manage clinics</div>
+                            <div className="space-y-10">
+                              
+                               <h3 className="text-lg font-semibold">Create a Clinic</h3>
+
+    <div id="createClinic">
+      <div className="w-full border border-gray-300 bg-gray-100 px-4 py-4 rounded-lg shadow-sm">
+
+        <form onSubmit={handleCreateClinic} className="space-y-4">
+ 
+          <div className="flex flex-col">
+            <label className="text-sm font-medium text-gray-800">Name of Clinic:</label>
+            <input
+              id="inputName"
+              ref={clinicNameRef}
+              placeholder="Input a name for the clinic"
+              className="border border-gray-300 rounded p-2 text-sm focus:ring focus:ring-indigo-200"
+            />
+          </div>
+
+          <div className="flex flex-col">
+            <label className="text-sm font-medium text-gray-800">Location of the clinic city:</label>
+            <input
+              id="inputLocation"
+              ref={clinicLocationRef}
+              placeholder="Input location of clinic"
+              className="border border-gray-300 rounded p-2 text-sm focus:ring focus:ring-indigo-200"
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="w-full bg-indigo-600 text-white py-2 rounded font-medium text-sm hover:bg-indigo-700 transition"
+          >
+            Create Clinic
+          </button>
+        </form>
+
+        {feedback.createClinic && (
+          <div
+            className={`mt-4 p-2 rounded text-sm ${
+              feedback.createClinic.isError
+                ? "bg-red-200 text-red-900"
+                : "bg-green-200 text-green-900"
+            }`}
+          >
+            {feedback.createClinic.message}
+          </div>
+        )}
+      </div>
+    </div>
+
+    {/* Get All Clinics */}
+    <h3 className="text-lg font-semibold">Get all Clinics</h3>
+
+    <div id="getClinics">
+      <div className="w-full border border-gray-300 bg-gray-100 px-4 py-4 rounded-lg shadow-sm">
+
+        <button
+          onClick={handleGetAllClinics}
+          className="bg-blue-600 text-white px-4 py-2 rounded text-sm hover:bg-blue-700 transition"
+        >
+          Load All Clinics 
+        </button>
+
+        <div className="mt-4 text-sm">
+          {clinics.length === 0 ? (
+            <div>No Clinics loaded.</div>
+          ) : (
+            <ul className="space-y-1">
+              {clinics.map((p) => (
+                <li key={p.id} className="bg-white border p-2 rounded">
+                  Id: {p.id} –  {p.name} : {p.location} 
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+
+        {feedback.getClinics && (
+          <div
+            className={`mt-4 p-2 rounded text-sm ${
+              feedback.getClinics.isError
+                ? "bg-red-200 text-red-900"
+                : "bg-green-200 text-green-900"
+            }`}
+          >
+            {feedback.getClinics.message}
+          </div>
+        )}
+      </div>
+    </div>
+
+             {/*Update Clinic*/}
+           <h3 className="text-lg font-semibold">Modify a Clinic with ID</h3>
+
+    <div id="modifyClinic">
+      <div className="w-full border border-gray-300 bg-gray-100 px-4 py-4 rounded-lg shadow-sm">
+
+        <form onSubmit={handleUpdateClinic} className="space-y-3 text-sm">
+          <input ref={updateClinicIdRef} placeholder="Clinic ID" type="number" className="w-full border p-2 rounded" />
+          <input ref={updateClinicNameRef} placeholder="Name" className="w-full border p-2 rounded" />
+          <input ref={updateClinicLocationRef} placeholder="Location" className="w-full border p-2 rounded" />
+
+          <button
+            type="submit"
+            className="w-full bg-yellow-500 text-white py-2 rounded font-medium hover:bg-yellow-600 transition"
+          >
+            Update Clinic
+          </button>
+        </form>
+
+        {feedback.updateClinic && (
+          <div
+            className={`mt-4 p-2 rounded text-sm ${
+              feedback.updateClinic.isError
+                ? "bg-red-200 text-red-900"
+                : "bg-green-200 text-green-900"
+            }`}
+          >
+            {feedback.updateClinic.message}
+          </div>
+        )}
+      </div>
+    </div>
+
+        {/* Delete Clinic */}
+    <h3 className="text-lg font-semibold">Delete a Clinic by ID</h3>
+
+    <div id="deleteClinic">
+      <div className="w-full border border-gray-300 bg-gray-100 px-4 py-4 rounded-lg shadow-sm">
+
+        <form onSubmit={handleDeleteClinic} className="space-y-3 text-sm">
+          <input ref={deleteClinicIdref} placeholder="Clinic ID" type="number" className="w-full border p-2 rounded" />
+
+          <button
+            type="submit"
+            className="w-full bg-red-600 text-white py-2 rounded font-medium hover:bg-red-700 transition"
+          >
+            Delete Clinic
+          </button>
+        </form>
+
+        {feedback.deleteClinic && (
+          <div
+            className={`mt-4 p-2 rounded text-sm ${
+              feedback.deleteClinic.isError
+                ? "bg-red-200 text-red-900"
+                : "bg-green-200 text-green-900"
+            }`}
+          >
+            {feedback.deleteClinic.message}
+          </div>
+        )}
+      </div>
+    </div>
+                        
+                        </div>
 
                     );
                 
                 case 5:
                     return (
-                         <div>manage appointments</div>
+                         <div>
+                          
+                          
+                          manage appointments</div>
                     );
 
 
