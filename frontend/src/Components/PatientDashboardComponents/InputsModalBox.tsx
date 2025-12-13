@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'; // <-- Make sure to import useState
 import { ClinicDetailed } from '../../types/normalTypes';
 import { createAppointment, getHoursPerDayAvailable } from '../../Services/AppointmentService';
+import { mapSymptomsToSpecialties } from './SymptomsMapping';
 
 interface Props {
     visible: boolean;
@@ -24,7 +25,20 @@ const [selectedTimeSlot, setSelectedTimeSlot] = useState<string>("");
 const [availableSlots, setAvailableSlots] = useState<string[]>([]);
 const timeSlots = ["08:00","09:00","10:00","11:00","12:00","13:00","14:00",];
 
-///const dateTimeForApi = selectedDate ? `${selectedDate}` : null;
+const [inputSymptoms, setInputSymptoms] = useState<string>("");
+const [isFiltered, setIsFiltered] = useState<number>(0);
+const [filteredDoctors, setFilteredDoctors]=useState<string[]>([]);
+
+const filterDoctorsBySymptoms = () =>{
+
+  if (isFiltered==0 || filteredDoctors.length==0)
+    return doctors;
+
+return doctors.filter(d => filteredDoctors.includes(d.type));
+
+
+}
+
 
    useEffect(() => {
     if (props.visible === false) {
@@ -79,17 +93,27 @@ const timeSlots = ["08:00","09:00","10:00","11:00","12:00","13:00","14:00",];
       }
 
     }
+const updatestringsMapping = () =>{
+if (inputSymptoms=="" || inputSymptoms==null || inputSymptoms==undefined)
+{
+setIsFiltered(0);
+}
 
+setIsFiltered(1);
+let firstFilter = inputSymptoms.split(",").join("");
+const symptompsSplit = firstFilter.split(" ");
+//main loop to filter and add types of doctors
+
+
+setFilteredDoctors(mapSymptomsToSpecialties(symptompsSplit));
+
+
+}
 
   const handleNext = () => {
     
     setStep(step+1); 
   };
-
-  const createDate = () =>{
-
-
-  }
 
   if (props.visible==false)
   {
@@ -104,12 +128,12 @@ const timeSlots = ["08:00","09:00","10:00","11:00","12:00","13:00","14:00",];
           <div>
             <h3 className="font-bold text-lg">Step 1: Reason for Visit</h3>
             <p className="py-4">Please enter the reason you are booking an appointment.</p>
-           <textarea
+           <textarea id="inputSymptoms" value={inputSymptoms} onChange={(e) => setInputSymptoms(e.target.value)}
              placeholder="Input Reasons"
              className="textarea textarea-bordered w-full min-h-24 py-4 border-4"
             />
             <div className="modal-action mt-6">
-              <button className="btn" onClick={handleNext}>Next</button>
+              <button className="btn"  onClick={ () =>{updatestringsMapping();  handleNext();  }}>Next</button>
             </div>
           </div>
         );
@@ -119,7 +143,7 @@ const timeSlots = ["08:00","09:00","10:00","11:00","12:00","13:00","14:00",];
             <div>
                 <h3 className="font-bold text-lg">Step 2: Select desired clinic and doctor</h3>
                           <br></br> 
-                    <select  onChange={e => setSelectedClinicId(e.target.value === "" ? "" : Number(e.target.value)) }
+                    <select  onChange={e => {setSelectedClinicId(e.target.value === "" ? "" : Number(e.target.value)); filterDoctorsBySymptoms();} }
                         className="select select-bordered w-full py-2 border-4"defaultValue=""><option value="" disabled>Select a clinic</option>
                           {props.clinics.map(clinic => (
                      <option key={clinic.id} value={clinic.id}>
@@ -131,7 +155,7 @@ const timeSlots = ["08:00","09:00","10:00","11:00","12:00","13:00","14:00",];
                    <br></br> 
                        <select onChange={e => setSelectedDoctorId(e.target.value === "" ? "" : Number(e.target.value))}
                         className="select select-bordered w-full py-2 border-4"defaultValue=""><option value="" disabled>Select a doctor</option>
-                             {doctors.map(doctor => (
+                             {filterDoctorsBySymptoms().map(doctor => (
                      <option key={doctor.doctorId} value={doctor.doctorId}>
                        {doctor.user.name}{' - '} {doctor.type}
                        </option>
