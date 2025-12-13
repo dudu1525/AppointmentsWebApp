@@ -2,11 +2,12 @@ import React, { useRef, useState } from 'react'
 import { createAdmin, getAllUsers } from '../Services/AuthService';
 import { createPatient, deletePatientById, getAllPatients, updatePatientById } from '../Services/PatientService';
 import { AssistantDetailsDto, ClinicDtoList, DoctorDetailsDto, PatientDetailsDto, UserTypeDto } from '../types/gettingListsTypes';
-import { updateAssistantDto, updateClinicDto, updateDoctorDto, updatePatientDto } from '../types/updateTypes';
+import { updateAppointmentDto, updateAssistantDto, updateClinicDto, updateDoctorDto, updatePatientDto } from '../types/updateTypes';
 import { createDoctor, deleteDoctorById, getAllDoctors, updateDoctorById } from '../Services/DoctorService';
 import { createAssistant, deleteAssistantById, getAllAssistant, updateAssistantById } from '../Services/AssistantService';
 import { createClinic, deleteClinicById, getAllClinics, updateClinicById } from '../Services/ClinicService';
 import { ClinicDetailed } from '../types/normalTypes';
+import { deleteAppointmentById, updateAppointmentById } from '../Services/AppointmentService';
 
 interface Props  {
 currentState: number;
@@ -433,7 +434,59 @@ if (result.success) {
   }
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////Manage Appointments
+//modify appointment by id
+const updateAppointmentIdRef = useRef<HTMLInputElement>(null);
+const updateAppointmentDateRef     = useRef<HTMLInputElement>(null);
+const updateAppointmentStatusRef = useRef<HTMLInputElement>(null);
+const updateAppointmentMessageRef    = useRef<HTMLInputElement>(null);
+const updateAppointmentDoctorIdRef    = useRef<HTMLInputElement>(null);
 
+
+const handleUpdateAppointment = async (e: React.FormEvent) => {
+  e.preventDefault();
+
+  const appointmentId = Number(updateAppointmentIdRef.current?.value);
+  if (!appointmentId) {
+    setOperationFeedback("updateAppointment", "Failed to update appointment " , true);
+    return;
+  }
+
+  const dto: updateAppointmentDto = {
+    appointmentDateTime: updateAppointmentDateRef.current?.value ?? "",
+    status: updateAppointmentStatusRef.current?.value ?? "",
+    message: updateAppointmentMessageRef.current?.value ?? "",
+    doctorId: Number(updateAppointmentDoctorIdRef.current?.value) ?? 0,
+
+  };
+
+  const result = await updateAppointmentById(appointmentId, dto);
+
+  if (result.success) {
+    setOperationFeedback("updateAppointment", "Appointment updated successfully");
+  } else {
+    setOperationFeedback("updateAppointment", "Failed to update appointment  " + result.message, true);
+  }
+};
+
+//delete appointment by id
+const deleteAppointmentIdref = useRef<HTMLInputElement>(null);
+
+const handleDeleteAppointment = async (e:React.FormEvent) =>{
+e.preventDefault();
+
+ const appointmentId = Number(deleteAppointmentIdref.current?.value);
+if (!appointmentId) {
+    setOperationFeedback("deleteAppointment", "Failed to delete appointment because of Id non existant" , true);
+    return;
+  }
+const result = await deleteAppointmentById(appointmentId);
+
+if (result.success) {
+    setOperationFeedback("deleteAppointment", "Appointment deleted successfully");
+  } else {
+    setOperationFeedback("deleteAppointment", "Failed to delete appointment  " + result.message, true);
+  }
+}
 
 
 
@@ -1270,10 +1323,76 @@ if (result.success) {
                 
                 case 5:
                     return (
-                         <div>
+                         <div className="space-y-10">
+
+                               <h3 className="text-lg font-semibold">Modify an Appointment by ID</h3>
+
+    <div id="modifyAppointment">
+      <div className="w-full border border-gray-300 bg-gray-100 px-4 py-4 rounded-lg shadow-sm">
+
+        <form onSubmit={handleUpdateAppointment} className="space-y-3 text-sm">
+          <input ref={updateAppointmentIdRef} placeholder="Appointment ID" type="number" className="w-full border p-2 rounded" />
+          <input type="datetime-local" ref={updateAppointmentDateRef} className="w-full border p-2 rounded" />
+          <input ref={updateAppointmentStatusRef} placeholder="Status" className="w-full border p-2 rounded" />
+          <input ref={updateAppointmentMessageRef} placeholder="Message" className="w-full border p-2 rounded" />
+          <input ref={updateAppointmentDoctorIdRef} placeholder="Doctor Id" type="number" className="w-full border p-2 rounded" />
+
+
+          <button
+            type="submit"
+            className="w-full bg-yellow-500 text-white py-2 rounded font-medium hover:bg-yellow-600 transition"
+          >
+            Update Appointment
+          </button>
+        </form>
+
+        {feedback.updateAppointment && (
+          <div
+            className={`mt-4 p-2 rounded text-sm ${
+              feedback.updateAppointment.isError
+                ? "bg-red-200 text-red-900"
+                : "bg-green-200 text-green-900"
+            }`}
+          >
+            {feedback.updateAppointment.message}
+          </div>
+        )}
+      </div>
+    </div>
+
+        {/* Delete Appointment */}
+    <h3 className="text-lg font-semibold">Delete an Appointment by ID</h3>
+
+    <div id="deleteDoctor">
+      <div className="w-full border border-gray-300 bg-gray-100 px-4 py-4 rounded-lg shadow-sm">
+
+        <form onSubmit={handleDeleteAppointment} className="space-y-3 text-sm">
+          <input ref={deleteAppointmentIdref} placeholder="Appointment ID" type="number" className="w-full border p-2 rounded" />
+
+          <button
+            type="submit"
+            className="w-full bg-red-600 text-white py-2 rounded font-medium hover:bg-red-700 transition"
+          >
+            Delete Appointment
+          </button>
+        </form>
+
+        {feedback.deleteAppointment && (
+          <div
+            className={`mt-4 p-2 rounded text-sm ${
+              feedback.deleteAppointment.isError
+                ? "bg-red-200 text-red-900"
+                : "bg-green-200 text-green-900"
+            }`}
+          >
+            {feedback.deleteAppointment.message}
+          </div>
+        )}
+      </div>
+    </div>
+
                           
-                          
-                          manage appointments</div>
+                         </div>
                     );
 
 

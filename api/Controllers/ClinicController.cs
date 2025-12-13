@@ -44,6 +44,16 @@ namespace api.Controllers
         {
 
             var clinics = await clinicrepo.GetAllAsync();
+           // var clinicsdto = clinics.Select(c => c.ToClinicSimpleDto());
+
+            return Ok(clinics);
+        }
+
+          [HttpGet("simple")]
+        public async Task<IActionResult> GetAllSimple()
+        {
+
+            var clinics = await clinicrepo.GetAllAsync();
             var clinicsdto = clinics.Select(c => c.ToClinicSimpleDto());
 
             return Ok(clinicsdto);

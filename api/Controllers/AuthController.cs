@@ -91,7 +91,7 @@ namespace api.Controllers
         }
 
         [HttpGet("get-all-users")]
-        [Authorize(Roles = "Admin")] 
+       // [Authorize(Roles = "Admin")] 
          public async Task<IActionResult> GetAll()
         {
 

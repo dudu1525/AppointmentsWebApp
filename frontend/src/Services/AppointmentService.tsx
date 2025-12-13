@@ -1,5 +1,7 @@
 import axios from "axios"
 import { Appointment, AppointmentFull, UserProfileToken } from "../types/normalTypes";
+import { updateAppointmentDto } from "../types/updateTypes";
+import { apiRequest } from "./GeneralServiceCall";
 
 
 
@@ -153,3 +155,19 @@ export const getAppointmentsByDoctorId = async (doctorId: number) =>{
         console.log("Error getting appointments by doctor id!");
     }
 }
+export const updateAppointmentById = (appointmentId: number, apptDto: updateAppointmentDto) =>
+{
+ return apiRequest(
+    axios.put(`${api}/appointments/updateApp/${appointmentId}`, apptDto));
+
+
+}
+
+
+export const deleteAppointmentById = (id: number) =>{
+
+return apiRequest(axios.delete(`${api}/appointments/${id}`));
+
+}
+
+

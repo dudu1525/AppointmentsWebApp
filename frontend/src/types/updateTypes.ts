@@ -31,3 +31,15 @@ name:string;
 location: string;
 
 }
+
+export type updateAppointmentDto = {
+//appointmentId: number;
+appointmentDateTime: string;
+status: string;
+message: string;
+doctorId: number;
+
+
+
+
+}

@@ -2,6 +2,7 @@ using api.Data;
 using api.Dtos.Appointments;
 using api.Interfaces;
 using api.Models;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
 namespace api.Repository
@@ -88,9 +89,19 @@ namespace api.Repository
             var existingAppointment = await _dbcontext.Appointment.FindAsync(id);
             if (existingAppointment == null) return null;
 
+            var supposeDoctor = await _dbcontext.Doctor.FirstOrDefaultAsync(d => d.DoctorId == appointmentDto.doctorId);
+
+
+            if (supposeDoctor == null)
+            {
+                return null;
+            }
+
             existingAppointment.AppointmentDateTime = appointmentDto.AppointmentDateTime;
             existingAppointment.Status = appointmentDto.Status;
             existingAppointment.Message = appointmentDto.Message;
+            existingAppointment.DoctorId = appointmentDto.doctorId;
+
 
             await _dbcontext.SaveChangesAsync();
             return existingAppointment;

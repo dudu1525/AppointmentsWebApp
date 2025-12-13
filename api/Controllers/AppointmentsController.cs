@@ -114,6 +114,19 @@ namespace api.Controllers
             return Ok (appointmentFull);
         }
 
+        [HttpPut("updateApp/{appointmentId:int}")]
+        public async Task<IActionResult> UpdateAppointment([FromRoute ]int appointmentId, [FromBody] UpdateAppointmentDto dto)
+        {
+            
+            var appnt = await _appointmentRepo.UpdateAsync(appointmentId, dto);
+            if (appnt == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(appnt);
+        }
+
 
         [HttpGet("doctorget/{doctorId:int}")]
         public async Task<IActionResult> GetAppointmentsByDoctorId([FromRoute] int doctorId)
@@ -128,6 +141,19 @@ namespace api.Controllers
            var dtoList = appointments.Select(a => a.ToFullAppointment()).ToList();
 
                         return Ok(dtoList);
+
+        }
+
+
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> DeleteAppointment([FromRoute] int id)
+        {
+            var appt = await _appointmentRepo.DeleteAsync(id);
+
+            if (appt == null)
+                return NotFound();
+
+            return Ok();    
 
         }
 

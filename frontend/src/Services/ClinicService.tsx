@@ -29,9 +29,11 @@ export const createClinic = (name: string,  location: string) =>{
 
 export const getAllClinics = () =>{
 
-return apiRequest(axios.get(api+"/clinics"));
+return apiRequest(axios.get(api+"/clinics/simple"));
 
 }
+
+
 
 export const updateClinicById = (clinicId: number, clinicDto: updateClinicDto) =>
 {
